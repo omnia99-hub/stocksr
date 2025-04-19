@@ -27,7 +27,8 @@ Imports:
     caret,
     TTR,
     zoo,
-    parallel
+    parallel,
+    keras
 Suggests:
     testthat,
     knitr,
