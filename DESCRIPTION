@@ -1,0 +1,39 @@
+Package: stocksr
+Type: Package
+Title: Sector-Wise Random Forest Modeling and Analysis for S&P 500 Data
+Version: 0.1.0
+Authors@R: 
+    person("First", "Last", email = "name@example.com", role = c("aut", "cre"))
+Description: 
+    The 'stocksr' package provides tools to load, process, and analyze S&P 500 
+    stock price data grouped by sectors (e.g., Technology, Energy, Health Care). 
+    It computes sector-level indices, enriches the data with technical indicators, 
+    and fits Random Forest models to predict sector performance. The package 
+    supports model tuning using time-series cross-validation and provides 
+    performance metrics (RMSE, MAE, R²) for comparison across sectors. 
+    Functions are designed to be modular and support parallel computation 
+    for scalable analysis.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.3.2
+Imports:
+    magrittr,
+    readxl,
+    dplyr,
+    tidyr,
+    ggplot2,
+    gridExtra,
+    randomForest,
+    caret,
+    TTR,
+    zoo,
+    parallel,
+    keras
+Suggests:
+    testthat,
+    knitr,
+    rmarkdown
+Depends: R (>= 4.0.0)
+LazyDataCompression: xz
+
