@@ -8,7 +8,7 @@
 A data frame with N rows and M columns.
 }
 \source{
-Extracted from S&P 500 Excel dataset
+Extracted from S&P 500 Excel dataset.
 }
 \usage{
 df_cleaned2

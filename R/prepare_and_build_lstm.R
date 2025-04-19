@@ -204,7 +204,7 @@ build_lstm_model <- function(sector_data, sector_name, time_steps = 10) {
     model$compile(loss = "mse", optimizer = "adam")
 
     # Fit the model with minimal options
-    history <- model$fit(
+    history <- model$fit( #nolint
       x_train, y_train,
       batch_size = 32,
       epochs = 50,

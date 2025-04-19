@@ -8,7 +8,7 @@
 A list or data frame depending on its content.
 }
 \source{
-Generated within the package.
+Generated internally within the package.
 }
 \usage{
 stocksr

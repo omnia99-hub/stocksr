@@ -58,8 +58,8 @@ forecast_with_lstm <- function(model, data, time_steps, forecast_periods = 30) {
     select(-Date, -sector_index, -returns)
 
   # Scale features using same parameters as in training
-  features_mean <- colMeans(features, na.rm = TRUE)
-  features_sd <- apply(features, 2, sd, na.rm = TRUE)
+  features_mean <- colMeans(features, na.rm = TRUE) # nolint
+  features_sd <- apply(features, 2, sd, na.rm = TRUE)#nolint
   features_scaled <- scale(features)
 
   # Scale target for reference
