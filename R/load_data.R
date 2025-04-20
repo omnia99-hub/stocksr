@@ -18,6 +18,9 @@
 #' @importFrom stats predict complete.cases sd
 #' @importFrom dplyr desc
 #' @importFrom magrittr %>%
+#' @importFrom utils head tail
+#' @importFrom stats reorder
+
 #' @export
 #'
 #' @examples

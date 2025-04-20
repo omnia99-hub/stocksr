@@ -28,7 +28,6 @@ Imports:
     caret,
     TTR,
     zoo,
-    parallel,
     keras
 Suggests:
     testthat,

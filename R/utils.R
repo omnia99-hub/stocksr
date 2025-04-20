@@ -1,6 +1,6 @@
 # Suppress global variable notes during R CMD check
 utils::globalVariables(c(
-  "Date", "returns", "sector_index", "R2", "IncNodePurity", ".", "%>%",
-  "sd", "desc", "complete.cases", "Sector", "RMSE", "theme", "Value", "Type",
-  "Feature"
+  "stocksr", "Date", "returns", "sector_index", "R2", "IncNodePurity",
+  ".", "%>%","sd", "desc", "complete.cases", "Sector", "RMSE", "theme",
+  "Value", "Type", "Feature"
 ))
