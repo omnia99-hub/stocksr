@@ -39,12 +39,7 @@ set.seed(42)
 sample_dates <- seq.Date(from = as.Date("2024-01-01"),
                          by = "day", length.out = 100)
 sample_index <- cumsum(rnorm(100, mean = 0.1, sd = 1))
-
 df <- data.frame(Date = sample_dates, sector_index = sample_index)
-
-# Calculate technical indicators
 df_with_indicators <- calculate_technical_indicators(df)
-
-# View first few rows
 head(df_with_indicators)
 }

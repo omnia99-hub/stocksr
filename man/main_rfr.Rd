@@ -20,7 +20,6 @@ visualizes feature importance for the best-performing sector.
 }
 \examples{
 \dontrun{
-# Make sure the 'stocksr' dataset is loaded before calling
 main_rfr()
 }
 }

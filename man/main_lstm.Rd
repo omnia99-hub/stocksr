@@ -18,7 +18,6 @@ evaluating performance, and optionally generating short-term forecasts.
 }
 \examples{
 \dontrun{
-# Ensure 'stocksr' is loaded and preprocessed
 main_lstm()
 }
 }

@@ -56,7 +56,7 @@ compare_sectors <- function(sector_models) {
   p2 <- ggplot(comparison, aes(x = reorder(Sector, R2), y = R2)) +
     geom_bar(stat = "identity", fill = "darkgreen") +
     theme_minimal() +
-    labs(title = "R² Score by Sector", x = "Sector") +
+    labs(title = "R2 Score by Sector", x = "Sector") +
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
   # Save the combined plot

@@ -1,7 +1,5 @@
 # Load CSV dataset
-stocksr <- readr::read_csv(
-  "S&P 500 daily dataset 2010-2020.csv"
-)
+stocksr <- readr::read_csv("S&P 500 daily dataset 2010-2020.csv")
 
 # Clean column names: lowercase and replace spaces with underscores
 library(tidyverse)

@@ -28,6 +28,7 @@ Imports:
     caret,
     TTR,
     zoo,
+    parallel,
     keras
 Suggests:
     testthat,
@@ -35,4 +36,3 @@ Suggests:
     rmarkdown
 Depends: R (>= 4.0.0)
 LazyDataCompression: xz
-

@@ -15,27 +15,24 @@
 #'         column and the columns corresponding to companies in a given sector.
 #'
 #' @importFrom readxl read_excel
-#' @importFrom stats predict complete.cases sd
+#' @importFrom stats predict complete.cases sd reorder
 #' @importFrom dplyr desc
-#' @importFrom magrittr %>%
 #' @importFrom utils head tail
-#' @importFrom stats reorder
-
+#' @importFrom magrittr %>%
+#'
 #' @export
 #'
 #' @examples
-#'
+#' \dontrun{
 #' # Load and preprocess data
 #' file_path <- "data/sp500_daily_2010_2020.csv"
 #' sectors_data <- load_and_preprocess_data(file_path)
-#'
-#' # View names of all sectors
 #' names(sectors_data)
+#' }
 load_and_preprocess_data <- function(file_path) {
   stocksr <- readxl::read_excel(file_path)
   dates <- stocksr[[1]]
 
-  # Create a mapping of companies to sectors
   sector_mapping <- list(
     # Technology
     "microsoft" = "Technology",
@@ -87,19 +84,14 @@ load_and_preprocess_data <- function(file_path) {
     "netflix" = "Communication Services",
     "comcast a" = "Communication Services",
     "t-mobile us" = "Communication Services"
-
   )
 
-  # Group companies by sector
   sectors <- list()
   sector_names <- unique(unlist(sector_mapping))
 
   for (sector in sector_names) {
-    # Get companies in this sector
     sector_companies <- names(sector_mapping)[sapply(sector_mapping,
                                                      function(x) x == sector)]
-
-    # Create a dataframe for this sector
     sector_df <- data.frame(Date = dates)
 
     for (company in sector_companies) {
@@ -108,10 +100,10 @@ load_and_preprocess_data <- function(file_path) {
       }
     }
 
-    if (ncol(sector_df) > 1) {  # Check if we found any companies
+    if (ncol(sector_df) > 1) {
       sectors[[sector]] <- sector_df
     }
   }
 
-  sectors
+  return(sectors)
 }

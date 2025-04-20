@@ -25,11 +25,10 @@ The Excel file should contain a `Date` column as the first column, followed
 by one column per company with daily closing prices or returns.
 }
 \examples{
-
+\dontrun{
 # Load and preprocess data
 file_path <- "data/sp500_daily_2010_2020.csv"
 sectors_data <- load_and_preprocess_data(file_path)
-
-# View names of all sectors
 names(sectors_data)
+}
 }

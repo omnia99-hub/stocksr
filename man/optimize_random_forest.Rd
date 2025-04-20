@@ -29,7 +29,6 @@ the data chronologically, and evaluated on the remaining 20%.
 }
 \examples{
 \dontrun{
-# Assume df_sector is already preprocessed
 rf_optimized <- optimize_random_forest(df_sector, "Financial")
 print(rf_optimized$best_params)
 }

@@ -8,7 +8,7 @@ calculate_sector_index(sector_df)
 }
 \arguments{
 \item{sector_df}{A data frame containing stock price data for companies in a
-single sector.The data frame must include a `Date` column and one column per
+single sector. The data frame must include a `Date` column and one column per
 company.}
 }
 \value{
@@ -20,7 +20,8 @@ A data frame with two columns:
 }
 }
 \description{
-Computes the average daily stock price across all companies in a given sector
+Computes the average daily stock price
+ across all companies in a given sector.
 }
 \examples{
 # Example sector data frame

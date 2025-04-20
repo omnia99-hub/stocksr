@@ -2,7 +2,7 @@
 #'
 #' Trains and evaluates a Random Forest regression model to predict a sector's
 #' index based on engineered features. The function performs an 80/20 time-based
-#' split for training and testing, computes performance metrics (RMSE, MAE, R²),
+#' split for training and testing, computes performance metrics (RMSE, MAE, R2),
 #' and visualizes predicted vs actual values. It also returns the feature
 #' importance rankings.
 #'
@@ -23,21 +23,21 @@
 #'   by IncNodePurity.}
 #' }
 #'
-#'
-#' @importFrom randomForest importance
+#' @importFrom randomForest randomForest importance
 #' @importFrom dplyr mutate arrange select
 #' @importFrom ggplot2 ggplot aes geom_line labs
-#' @importFrom ggplot2 theme_minimal scale_color_manual
+#'  theme_minimal scale_color_manual
 #' @export
 #'
 #' @examples
-#' result <- build_random_forest_model(df_tech, "Technology")
-#'
-#' # View RMSE
-#' result$rmse
-#'
-#' # View top features
-#' head(result$feature_importance)
+#' \dontrun{
+#'   sectors <- load_and_preprocess_data(stocksr)
+#'   df <- calculate_sector_index(sectors[["Technology"]])
+#'   df_tech <- calculate_technical_indicators(df)
+#'   result <- build_random_forest_model(df_tech, "Technology")
+#'   result$rmse
+#'   head(result$feature_importance)
+#' }
 build_random_forest_model <- function(sector_data, sector_name) {
   cat("\n--- Building Random Forest model for", sector_name, "sector ---\n")
 
@@ -77,7 +77,7 @@ build_random_forest_model <- function(sector_data, sector_name) {
 
   cat("Root Mean Squared Error:", round(rmse, 4), "\n")
   cat("Mean Absolute Error:", round(mae, 4), "\n")
-  cat("R² Score:", round(r2, 4), "\n")
+  cat("R2 Score:", round(r2, 4), "\n")
 
   # Feature importance
   importance_df <- importance(rf_model) %>%
@@ -95,15 +95,14 @@ build_random_forest_model <- function(sector_data, sector_name) {
     Predicted = y_pred
   )
 
-  p <- ggplot(plot_data, aes(x = plot_data$Time)) +
-    geom_line(aes(y = plot_data$Actual, color = "Actual")) +
-    geom_line(aes(y = plot_data$Predicted, color = "Predicted")) +
+  p <- ggplot(plot_data, aes(x = Time)) +
+    geom_line(aes(y = Actual, color = "Actual")) +
+    geom_line(aes(y = Predicted, color = "Predicted")) +
     labs(title = paste(sector_name, "Sector - Random Forest Predictions"),
          x = "Time", y = "Sector Index") +
     scale_color_manual(values = c("Actual" = "blue", "Predicted" = "red")) +
     theme_minimal()
 
-  # Save the plot
   print(p)
 
   # Return model and performance metrics

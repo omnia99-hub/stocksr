@@ -7,15 +7,18 @@
 \format{
 A data frame with N rows and many columns:
 - First column: `date` (YYYY-MM-DD).
-- Others: stock tickers or names (e.g., `APPLE`, `TESLA`, etc.).
+- Others: stock tickers or names (e.g., `APPLE`, `TESLA`,
+ `AMAZON.COM`, etc.).
 }
 \source{
-From Yahoo Finance or Kaggle, then cleaned and processed.
+Extracted and processed from public S&P 500 datasets
+(e.g., Yahoo Finance or Kaggle).
 }
 \usage{
 sp500_daily_2010_2020
 }
 \description{
-Cleaned daily S&P 500 stock prices for companies from 2010 to 2020.
+A cleaned dataset containing daily S&P 500 stock prices for multiple
+companies from 2010 to 2020.
 }
 \keyword{datasets}
