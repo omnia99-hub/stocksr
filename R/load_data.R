@@ -1,31 +1,24 @@
 #' Load and preprocess S&P 500 data
 #'
-#' This function loads an Excel file containing historical stock price data
-#' for S&P 500 companies. It then groups the companies into predefined sectors
-#' (e.g., Technology, Financial, Energy) based on a mapping and returns a
-#' named list of data frames, one per sector. Each data frame includes
-#' a 'Date' column and columns for the companies in that sector.
+#' Loads an Excel file of S&P 500 prices and groups companies into sectors.
+#' Each sector is returned as a data frame with 'Date' and company columns.
 #'
-#' The Excel file should contain a `Date` column as the first column, followed
-#' by one column per company with daily closing prices or returns.
+#' @param file_path Path to the Excel file with the stock price data.
 #'
-#' @param file_path Path to the Excel file containing the stock data.
-#'
-#' @return A named list of data frames. Each data frame contains the 'Date'
-#'         column and the columns corresponding to companies in a given sector.
+#' @return A named list of data frames (one per sector).
 #'
 #' @importFrom readxl read_excel
-#' @importFrom stats predict complete.cases sd reorder
 #' @importFrom dplyr desc
-#' @importFrom utils head tail
 #' @importFrom magrittr %>%
-#'
+#' @importFrom utils head tail
+#' @importFrom stats predict complete.cases sd reorder
+#' @importFrom stats time
+
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' # Load and preprocess data
-#' file_path <- "data/sp500_daily_2010_2020.csv"
+#' file_path <- "data/sp500_daily_2010_2020.xlsx"
 #' sectors_data <- load_and_preprocess_data(file_path)
 #' names(sectors_data)
 #' }
@@ -34,7 +27,6 @@ load_and_preprocess_data <- function(file_path) {
   dates <- stocksr[[1]]
 
   sector_mapping <- list(
-    # Technology
     "microsoft" = "Technology",
     "apple" = "Technology",
     "nvidia" = "Technology",
@@ -47,8 +39,6 @@ load_and_preprocess_data <- function(file_path) {
     "intel" = "Technology",
     "texas instruments" = "Technology",
     "advanced micro devices" = "Technology",
-
-    # Financial
     "jp morgan chase & co." = "Financial",
     "visa 'a'" = "Financial",
     "mastercard" = "Financial",
@@ -56,29 +46,21 @@ load_and_preprocess_data <- function(file_path) {
     "citigroup" = "Financial",
     "wells fargo & co" = "Financial",
     "morgan stanley" = "Financial",
-
-    # Energy
     "exxon mobil" = "Energy",
     "chevron" = "Energy",
     "conocophillips" = "Energy",
     "schlumberger" = "Energy",
     "eog res." = "Energy",
-
-    # Health Care
     "johnson & johnson" = "Health Care",
     "unitedhealth group" = "Health Care",
     "eli lilly" = "Health Care",
     "pfizer" = "Health Care",
     "merck & company" = "Health Care",
-
-    # Consumer Discretionary
     "amazon.com" = "Consumer Discretionary",
     "tesla" = "Consumer Discretionary",
     "home depot" = "Consumer Discretionary",
     "mcdonald's" = "Consumer Discretionary",
     "nike 'b'" = "Consumer Discretionary",
-
-    # Communication Services
     "alphabet a" = "Communication Services",
     "walt disney" = "Communication Services",
     "netflix" = "Communication Services",
@@ -90,8 +72,10 @@ load_and_preprocess_data <- function(file_path) {
   sector_names <- unique(unlist(sector_mapping))
 
   for (sector in sector_names) {
-    sector_companies <- names(sector_mapping)[sapply(sector_mapping,
-                                                     function(x) x == sector)]
+    sector_companies <- names(sector_mapping)[
+      sapply(sector_mapping, function(x) x == sector)
+    ]
+
     sector_df <- data.frame(Date = dates)
 
     for (company in sector_companies) {

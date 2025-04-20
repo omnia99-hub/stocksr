@@ -7,14 +7,11 @@
 main_lstm()
 }
 \value{
-None. The function prints progress updates, model evaluation metrics,
-and forecast plots.
+None. Prints progress and shows forecast plot.
 }
 \description{
-Executes the complete analysis pipeline using LSTM neural networks for all
-sectors. The pipeline includes loading and preprocessing stock data,
-computing sector indices and technical indicators, training LSTM models,
-evaluating performance, and optionally generating short-term forecasts.
+Executes the LSTM modeling pipeline on all sectors: preprocesses,
+trains models, evaluates, and forecasts.
 }
 \examples{
 \dontrun{

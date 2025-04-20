@@ -9,9 +9,10 @@ build_random_forest_model(sector_data, sector_name)
 build_random_forest_model(sector_data, sector_name)
 }
 \arguments{
-\item{sector_data}{Data frame with features and sector_index column.}
+\item{sector_data}{A data frame with engineered features. Must include
+'sector_index', 'Date', and optionally 'returns'.}
 
-\item{sector_name}{String, the name of the sector (used in plots).}
+\item{sector_name}{A string giving the sector name for reporting.}
 }
 \value{
 A named list containing:
@@ -24,7 +25,14 @@ A named list containing:
   by IncNodePurity.}
 }
 
-A list with model object, RMSE, MAE, R², and feature importance.
+A list with:
+\describe{
+  \item{model}{Trained random forest model.}
+  \item{rmse}{Root mean squared error.}
+  \item{mae}{Mean absolute error.}
+  \item{r2}{R-squared performance.}
+  \item{feature_importance}{Data frame of ranked feature importance.}
+}
 }
 \description{
 Trains and evaluates a Random Forest regression model to predict a sector's
@@ -33,7 +41,9 @@ split for training and testing, computes performance metrics (RMSE, MAE, R2),
 and visualizes predicted vs actual values. It also returns the feature
 importance rankings.
 
-Trains and evaluates a random forest model to predict sector index values.
+Trains and evaluates a random forest model to predict sector index values
+based on engineered features. It performs an 80/20 time-based split,
+computes RMSE, MAE, and R², and returns feature importance.
 }
 \examples{
 \dontrun{

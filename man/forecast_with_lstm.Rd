@@ -2,56 +2,29 @@
 % Please edit documentation in R/forecast_lstm.R
 \name{forecast_with_lstm}
 \alias{forecast_with_lstm}
-\title{Forecast with LSTM or Fallback Model}
+\title{Forecast with LSTM or Moving Average Fallback}
 \usage{
 forecast_with_lstm(model, data, time_steps, forecast_periods = 30)
 }
 \arguments{
-\item{model}{A trained LSTM model object (from `keras_model_sequential`) or
-the string `"moving_average"` to use the fallback method.}
+\item{model}{A trained LSTM model or "moving_average" fallback.}
 
-\item{data}{A data frame with historical time series data. Must include
-columns `Date`, `sector_index`, `returns`, and any feature columns used
-during training.}
+\item{data}{A data frame with columns: Date, sector_index, returns, etc.}
 
-\item{time_steps}{Integer. The number of time steps used during LSTM training
-(i.e., window size for each prediction).}
+\item{time_steps}{Integer. Time steps used in training (e.g., 10).}
 
-\item{forecast_periods}{Integer. The number of future periods to forecast
-(default = 30).}
+\item{forecast_periods}{Integer. Days to forecast (default: 30).}
 }
 \value{
-A data frame with:
-\describe{
-  \item{Date}{Forecasted dates, starting from one day after the last
-  date in `data`.}
-  \item{Forecast}{Forecasted sector index values.}
-}
+A data frame with Date and Forecast columns.
 }
 \description{
-Generates a forecast for future values of a sector index using a trained
-LSTM model.If the LSTM model is unavailable or fails, the function defaults
-to a simple moving average model.
-}
-\details{
-For LSTM forecasts, the function uses a rolling input mechanism to predict
-one step at a time,
-shifting the prediction window forward. If the LSTM model is not usable or
-an error occurs during prediction,
-it falls back to a moving average forecast using the last 5 values.
-
-A plot showing both historical and forecasted values is automatically
-generated.
+Generates future sector index forecasts using a trained LSTM model.
+If the model is unavailable or fails, falls back to moving average.
 }
 \examples{
 \dontrun{
-# Suppose you have a trained LSTM model and a dataset
-forecast_df <- forecast_with_lstm(model = trained_lstm_model,
-                                  data = df_sector,
-                                  time_steps = 10,
-                                  forecast_periods = 30)
-
-# View forecasted values
+forecast_df <- forecast_with_lstm(model, df_sector, 10, 30)
 head(forecast_df)
 }
 }

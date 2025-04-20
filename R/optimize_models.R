@@ -51,7 +51,8 @@ optimize_random_forest <- function(sector_data, sector_name) {
   )
 
   param_grid <- expand.grid(
-    mtry = c(floor(sqrt(ncol(x_train))), floor(ncol(x_train) / 3), floor(ncol(x_train) / 2))
+    mtry = c(floor(sqrt(ncol(x_train))), floor(ncol(x_train) / 3),
+             floor(ncol(x_train) / 2))
   )
 
   set.seed(42)

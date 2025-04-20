@@ -31,8 +31,9 @@ Imports:
     parallel,
     keras
 Suggests:
-    testthat,
+    testthat (>= 3.0.0),
     knitr,
     rmarkdown
 Depends: R (>= 4.0.0)
 LazyDataCompression: xz
+Config/testthat/edition: 3

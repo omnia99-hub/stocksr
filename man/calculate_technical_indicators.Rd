@@ -7,24 +7,22 @@
 calculate_technical_indicators(df)
 }
 \arguments{
-\item{df}{A data frame with at least two columns:
+\item{df}{A data frame with columns:
 \describe{
   \item{Date}{A date column.}
-  \item{sector_index}{A numeric column representing sector-level index
-  or price.}
+  \item{sector_index}{A numeric column for sector-level price/index.}
 }}
 }
 \value{
-A data frame with the original columns plus additional columns:
+A data frame with the original columns plus:
 \describe{
-  \item{returns}{Daily returns based on sector index.}
-  \item{MA5, MA10, MA20}{Simple Moving Averages over 5, 10, and 20 days.}
-  \item{EMA5, EMA10}{Exponential Moving Averages over 5 and 10 days.}
-  \item{volatility5, volatility10}{Rolling standard deviation (volatility).}
-  \item{RSI}{Relative Strength Index computed over a 14-day window.}
-  \item{lag_1 to lag_5}{Lagged values of sector index from previous 1 to 5
-  days.}
-  \item{returns_lag_1 to returns_lag_5}{Lagged values of daily returns.}
+  \item{returns}{Daily returns.}
+  \item{MA5, MA10, MA20}{Simple Moving Averages.}
+  \item{EMA5, EMA10}{Exponential Moving Averages.}
+  \item{volatility5, volatility10}{Rolling standard deviations.}
+  \item{RSI}{Relative Strength Index.}
+  \item{lag_1 to lag_5}{Lagged index values.}
+  \item{returns_lag_1 to returns_lag_5}{Lagged return values.}
 }
 }
 \description{
@@ -34,12 +32,9 @@ including moving averages (SMA, EMA), volatility, Relative Strength Index
 modeling and machine learning.
 }
 \examples{
-# Simulated example of sector index data
 set.seed(42)
-sample_dates <- seq.Date(from = as.Date("2024-01-01"),
-                         by = "day", length.out = 100)
-sample_index <- cumsum(rnorm(100, mean = 0.1, sd = 1))
-df <- data.frame(Date = sample_dates, sector_index = sample_index)
-df_with_indicators <- calculate_technical_indicators(df)
-head(df_with_indicators)
+dates <- seq.Date(as.Date("2024-01-01"), by = "day", length.out = 100)
+index <- cumsum(rnorm(100, mean = 0.1, sd = 1))
+df <- data.frame(Date = dates, sector_index = index)
+calculate_technical_indicators(df)
 }

@@ -7,27 +7,18 @@
 load_and_preprocess_data(file_path)
 }
 \arguments{
-\item{file_path}{Path to the Excel file containing the stock data.}
+\item{file_path}{Path to the Excel file with the stock price data.}
 }
 \value{
-A named list of data frames. Each data frame contains the 'Date'
-        column and the columns corresponding to companies in a given sector.
+A named list of data frames (one per sector).
 }
 \description{
-This function loads an Excel file containing historical stock price data
-for S&P 500 companies. It then groups the companies into predefined sectors
-(e.g., Technology, Financial, Energy) based on a mapping and returns a
-named list of data frames, one per sector. Each data frame includes
-a 'Date' column and columns for the companies in that sector.
-}
-\details{
-The Excel file should contain a `Date` column as the first column, followed
-by one column per company with daily closing prices or returns.
+Loads an Excel file of S&P 500 prices and groups companies into sectors.
+Each sector is returned as a data frame with 'Date' and company columns.
 }
 \examples{
 \dontrun{
-# Load and preprocess data
-file_path <- "data/sp500_daily_2010_2020.csv"
+file_path <- "data/sp500_daily_2010_2020.xlsx"
 sectors_data <- load_and_preprocess_data(file_path)
 names(sectors_data)
 }

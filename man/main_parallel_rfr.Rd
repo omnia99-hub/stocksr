@@ -2,19 +2,19 @@
 % Please edit documentation in R/run_pipeline.R
 \name{main_parallel_rfr}
 \alias{main_parallel_rfr}
-\title{Run the Full Parallelized Random Forest Pipeline}
+\title{Run Parallel Random Forest Pipeline}
 \usage{
 main_parallel_rfr(file_path)
 }
 \arguments{
-\item{file_path}{Path to the Excel or CSV file containing the raw stock data.}
+\item{file_path}{File path to the stock dataset (Excel or CSV).}
 }
 \value{
-None. Prints results and returns performance summary.
+None. Outputs progress and comparison metrics.
 }
 \description{
-Loads and processes the dataset, computes technical indicators, trains
-Random Forest models in parallel for all sectors, and compares results.
+Loads stock data, splits by sector, computes features, trains models
+in parallel, and compares performance.
 }
 \examples{
 \dontrun{
