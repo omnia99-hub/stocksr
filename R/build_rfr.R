@@ -25,92 +25,106 @@
 #'
 #' @importFrom randomForest randomForest importance
 #' @importFrom dplyr mutate arrange select
-#' @importFrom ggplot2 ggplot aes geom_line labs
-#'  theme_minimal scale_color_manual
+#' @importFrom ggplot2 ggplot aes geom_line labs geom_bar coord_flip
+#' @importFrom ggplot2 theme_minimal scale_color_manual
+#' @importFrom caret createDataPartition
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#'   sectors <- load_and_preprocess_data(stocksr)
-#'   df <- calculate_sector_index(sectors[["Technology"]])
-#'   df_tech <- calculate_technical_indicators(df)
-#'   result <- build_random_forest_model(df_tech, "Technology")
-#'   result$rmse
-#'   head(result$feature_importance)
-#' }
+#' sectors <- load_and_preprocess_data(stocksr)
+#' df <- calculate_sector_index(sectors[["Energy"]])
+#' df_tech <- calculate_technical_indicators(df)
+#' result <- build_random_forest_model(df_tech, "Energy")
+#' result$rmse
+#' head(result$feature_importance)
 build_random_forest_model <- function(sector_data, sector_name) {
   cat("\n--- Building Random Forest model for", sector_name, "sector ---\n")
 
-  # Define features and target
-  model_data <- sector_data %>%
-    select(-Date, -sector_index, -returns)
+  # Prepare data
+  features <- sector_data %>%
+    select(-Date, -sector_index, -returns, -log_price)
 
   target <- sector_data$sector_index
 
-  # Split data chronologically (time series split)
-  train_size <- floor(nrow(sector_data) * 0.8)
+  # Split data (80% train, 20% test)
+  set.seed(42)
+  train_index <- createDataPartition(target, p = 0.8, list = FALSE)
+  x_train <- features[train_index, ]
+  x_test <- features[-train_index, ]
+  y_train <- target[train_index]
+  y_test <- target[-train_index]
 
-  x_train <- model_data[1:train_size, ]
-  x_test <- model_data[(train_size + 1):nrow(model_data), ]
-  y_train <- target[1:train_size]
-  y_test <- target[(train_size + 1):length(target)]
-
-  # Train Random Forest model
-  set.seed(42)  # For reproducibility
-  rf_model <- randomForest::randomForest(
+  # Train model
+  rf_model <- randomForest(
     x = x_train,
     y = y_train,
-    ntree = 100,
+    ntree = 500,
     mtry = floor(sqrt(ncol(x_train))),
-    nodesize = 5,
-    importance = TRUE
+    importance = TRUE # This is crucial for importance calculation
   )
 
-  # Get predictions
+  # Predictions
   y_pred <- predict(rf_model, x_test)
 
-  # Calculate metrics
+  # Metrics
   mse <- mean((y_test - y_pred)^2)
   rmse <- sqrt(mse)
   mae <- mean(abs(y_test - y_pred))
   r2 <- 1 - sum((y_test - y_pred)^2) / sum((y_test - mean(y_test))^2)
 
-  cat("Root Mean Squared Error:", round(rmse, 4), "\n")
-  cat("Mean Absolute Error:", round(mae, 4), "\n")
-  cat("R2 Score:", round(r2, 4), "\n")
+  cat("Model performance:\n")
+  cat("RMSE:", round(rmse, 4), "\n")
+  cat("MAE:", round(mae, 4), "\n")
+  cat("R<U+00B2>:", round(r2, 4), "\n")
 
-  # Feature importance
-  importance_df <- importance(rf_model) %>%
-    as.data.frame() %>%
-    mutate(Feature = rownames(.)) %>%
-    arrange(desc(IncNodePurity))
-
-  cat("\nTop 5 Important Features:\n")
-  print(head(importance_df, 5))
-
-  # Plot actual vs predicted
+  # Plot
   plot_data <- data.frame(
-    Time = seq_along(y_test),
+    Date = sector_data$Date[-train_index],
     Actual = y_test,
     Predicted = y_pred
   )
 
-  p <- ggplot(plot_data, aes(x = Time)) +
-    geom_line(aes(y = Actual, color = "Actual")) +
-    geom_line(aes(y = Predicted, color = "Predicted")) +
-    labs(title = paste(sector_name, "Sector - Random Forest Predictions"),
-         x = "Time", y = "Sector Index") +
+  p <- ggplot(plot_data, aes(x = Date)) +
+    geom_line(aes(y = Actual, color = "Actual"), linewidth = 0.8) +
+    geom_line(aes(y = Predicted, color = "Predicted"),
+      linewidth = 0.8, alpha = 0.7
+    ) +
+    labs(
+      title = paste(sector_name, "Sector - Random Forest Predictions"),
+      subtitle = paste("R<U+00B2> =", round(r2, 3)),
+      x = "Date",
+      y = "Sector Index"
+    ) +
     scale_color_manual(values = c("Actual" = "blue", "Predicted" = "red")) +
     theme_minimal()
 
   print(p)
 
-  # Return model and performance metrics
+  # Get importance - corrected method
+  imp <- randomForest::importance(rf_model)
+  imp_df <- data.frame(
+    Feature = rownames(imp),
+    Importance = imp[, "%IncMSE"] # Using %IncMSE for importance
+  ) %>%
+    arrange(desc(Importance))
+
+  # Plot feature importance
+  imp_plot <- ggplot(head(imp_df, 10), aes(
+    x = reorder(Feature, Importance),
+    y = Importance
+  )) +
+    geom_bar(stat = "identity", fill = "steelblue") +
+    coord_flip() +
+    labs(title = paste("Top 10 Important Features -", sector_name)) +
+    theme_minimal()
+
+  print(imp_plot)
+
   list(
     model = rf_model,
     rmse = rmse,
     mae = mae,
     r2 = r2,
-    feature_importance = importance_df
+    importance = imp_df
   )
 }

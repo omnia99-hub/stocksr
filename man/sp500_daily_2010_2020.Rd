@@ -3,7 +3,7 @@
 \docType{data}
 \name{sp500_daily_2010_2020}
 \alias{sp500_daily_2010_2020}
-\title{S&P 500 Daily Dataset (2010–2020)}
+\title{S&P 500 Daily Dataset (2010<U+2013>2020)}
 \format{
 A data frame with N rows and many columns:
 - First column: `date` (YYYY-MM-DD).

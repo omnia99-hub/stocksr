@@ -14,7 +14,7 @@
 #' @source Generated internally within the package.
 "stocksr"
 
-#' S&P 500 Daily Dataset (2010–2020)
+#' S&P 500 Daily Dataset (2010<U+2013>2020)
 #'
 #' A cleaned dataset containing daily S&P 500 stock prices for multiple
 #' companies from 2010 to 2020.

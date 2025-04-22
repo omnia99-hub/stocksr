@@ -3,7 +3,7 @@
 #' Loads an Excel file of S&P 500 prices and groups companies into sectors.
 #' Each sector is returned as a data frame with 'Date' and company columns.
 #'
-#' @param file_path Path to the Excel file with the stock price data.
+#' @param df_cleaned2 A data frame of cleaned S&P 500 stock data
 #'
 #' @return A named list of data frames (one per sector).
 #'
@@ -13,39 +13,20 @@
 #' @importFrom utils head tail
 #' @importFrom stats predict complete.cases sd reorder
 #' @importFrom stats time
-
 #' @export
-#'
 #' @examples
-#' \dontrun{
-#' file_path <- "data/sp500_daily_2010_2020.xlsx"
-#' sectors_data <- load_and_preprocess_data(file_path)
+#'
+#' # Load and preprocess data
+#' data(df_cleaned2)
+#' sectors_data <- load_and_preprocess_data(df_cleaned2)
+#'
+#' # View names of all sectors
 #' names(sectors_data)
-#' }
-load_and_preprocess_data <- function(file_path) {
-  stocksr <- readxl::read_excel(file_path)
-  dates <- stocksr[[1]]
+load_and_preprocess_data <- function(df_cleaned2) {
+  dates <- df_cleaned2[[1]]
 
+  # Only include Energy and Healthcare sectors
   sector_mapping <- list(
-    "microsoft" = "Technology",
-    "apple" = "Technology",
-    "nvidia" = "Technology",
-    "broadcom" = "Technology",
-    "oracle" = "Technology",
-    "adobe (nas)" = "Technology",
-    "salesforce" = "Technology",
-    "cisco systems" = "Technology",
-    "qualcomm" = "Technology",
-    "intel" = "Technology",
-    "texas instruments" = "Technology",
-    "advanced micro devices" = "Technology",
-    "jp morgan chase & co." = "Financial",
-    "visa 'a'" = "Financial",
-    "mastercard" = "Financial",
-    "bank of america" = "Financial",
-    "citigroup" = "Financial",
-    "wells fargo & co" = "Financial",
-    "morgan stanley" = "Financial",
     "exxon mobil" = "Energy",
     "chevron" = "Energy",
     "conocophillips" = "Energy",
@@ -55,17 +36,7 @@ load_and_preprocess_data <- function(file_path) {
     "unitedhealth group" = "Health Care",
     "eli lilly" = "Health Care",
     "pfizer" = "Health Care",
-    "merck & company" = "Health Care",
-    "amazon.com" = "Consumer Discretionary",
-    "tesla" = "Consumer Discretionary",
-    "home depot" = "Consumer Discretionary",
-    "mcdonald's" = "Consumer Discretionary",
-    "nike 'b'" = "Consumer Discretionary",
-    "alphabet a" = "Communication Services",
-    "walt disney" = "Communication Services",
-    "netflix" = "Communication Services",
-    "comcast a" = "Communication Services",
-    "t-mobile us" = "Communication Services"
+    "merck & company" = "Health Care"
   )
 
   sectors <- list()
@@ -79,8 +50,8 @@ load_and_preprocess_data <- function(file_path) {
     sector_df <- data.frame(Date = dates)
 
     for (company in sector_companies) {
-      if (company %in% colnames(stocksr)) {
-        sector_df[[company]] <- stocksr[[company]]
+      if (company %in% colnames(df_cleaned2)) {
+        sector_df[[company]] <- df_cleaned2[[company]]
       }
     }
 
@@ -89,5 +60,5 @@ load_and_preprocess_data <- function(file_path) {
     }
   }
 
-  return(sectors)
+  sectors
 }

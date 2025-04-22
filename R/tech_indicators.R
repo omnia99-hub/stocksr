@@ -22,9 +22,9 @@
 #'   \item{returns_lag_1 to returns_lag_5}{Lagged return values.}
 #' }
 #'
-#' @importFrom TTR SMA EMA RSI
+#' @importFrom TTR SMA EMA RSI MACD
 #' @importFrom zoo rollapply
-#' @importFrom dplyr lag
+#' @importFrom dplyr lag filter_all all_vars
 #' @importFrom tidyr drop_na
 #' @export
 #'
@@ -37,29 +37,47 @@
 calculate_technical_indicators <- function(df) {
   df_copy <- df
   df_copy$Date <- as.Date(df_copy$Date)
-
+  df_copy$log_price <- log(df_copy$sector_index)
   df_copy$returns <- c(NA, diff(df_copy$sector_index) /
                          lag(df_copy$sector_index, 1)[-1])
+  df_copy$log_returns <- c(NA, diff(df_copy$log_price))
 
-  df_copy$MA5 <- SMA(df_copy$sector_index, n = 5)
-  df_copy$MA10 <- SMA(df_copy$sector_index, n = 10)
-  df_copy$MA20 <- SMA(df_copy$sector_index, n = 20)
-
-  df_copy$EMA5 <- EMA(df_copy$sector_index, n = 5)
-  df_copy$EMA10 <- EMA(df_copy$sector_index, n = 10)
-
-  df_copy$volatility5 <- rollapply(df_copy$sector_index, 5, sd,
-                                   align = "right", fill = NA)
-  df_copy$volatility10 <- rollapply(df_copy$sector_index, 10, sd,
-                                    align = "right", fill = NA)
-
-  df_copy$RSI <- RSI(df_copy$sector_index, n = 14)
-
-  for (lag in 1:5) {
-    df_copy[[paste0("lag_", lag)]] <- lag(df_copy$sector_index, lag)
-    df_copy[[paste0("returns_lag_", lag)]] <- lag(df_copy$returns, lag)
+  # Moving averages
+  ma_windows <- c(5, 10, 20, 50)
+  for (w in ma_windows) {
+    df_copy[[paste0("MA", w)]] <- SMA(df_copy$sector_index, n = w)
+    df_copy[[paste0("EMA", w)]] <- EMA(df_copy$sector_index, n = w)
   }
 
-  df_copy <- df_copy %>% drop_na()
-  return(df_copy)
+  # MACD
+  macd <- TTR::MACD(df_copy$sector_index, nFast = 12, nSlow = 26, nSig = 9)
+  df_copy$MACD <- macd[, "macd"]
+  df_copy$MACD_signal <- macd[, "signal"]
+
+  # Volatility
+  df_copy$volatility5 <- rollapply(df_copy$log_returns,
+    width = 5,
+    FUN = sd, fill = NA, align = "right"
+  )
+  df_copy$volatility20 <- rollapply(df_copy$log_returns,
+    width = 20,
+    FUN = sd, fill = NA, align = "right"
+  )
+
+  # Lagged features
+  for (lag in c(1, 2, 5)) {
+    df_copy[[paste0("lag_", lag)]] <- lag(df_copy$sector_index, lag)
+    df_copy[[paste0("log_return_lag_", lag)]] <- lag(df_copy$log_returns, lag)
+  }
+
+  # Time features
+  df_copy$day_of_week <- lubridate::wday(df_copy$Date, label = TRUE)
+  df_copy$month <- lubridate::month(df_copy$Date, label = TRUE)
+
+  # Remove NAs
+  df_copy <- df_copy %>%
+    drop_na() %>%
+    dplyr::filter_all(dplyr::all_vars(!is.infinite(.)))
+
+  df_copy
 }

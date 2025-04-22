@@ -4,10 +4,10 @@
 \alias{load_and_preprocess_data}
 \title{Load and preprocess S&P 500 data}
 \usage{
-load_and_preprocess_data(file_path)
+load_and_preprocess_data(df_cleaned2)
 }
 \arguments{
-\item{file_path}{Path to the Excel file with the stock price data.}
+\item{df_cleaned2}{A data frame of cleaned S&P 500 stock data}
 }
 \value{
 A named list of data frames (one per sector).
@@ -17,9 +17,11 @@ Loads an Excel file of S&P 500 prices and groups companies into sectors.
 Each sector is returned as a data frame with 'Date' and company columns.
 }
 \examples{
-\dontrun{
-file_path <- "data/sp500_daily_2010_2020.xlsx"
-sectors_data <- load_and_preprocess_data(file_path)
+
+# Load and preprocess data
+data(df_cleaned2)
+sectors_data <- load_and_preprocess_data(df_cleaned2)
+
+# View names of all sectors
 names(sectors_data)
-}
 }
