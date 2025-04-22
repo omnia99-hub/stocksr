@@ -26,7 +26,7 @@ The `stocksr` package offers tools for preprocessing, analyzing, and modeling S&
 - **Computing sector-level indices** from company-level stock prices
 - **Generating lag features and technical indicators** for forecasting
 - **Training Random Forest models** to predict sector index movements
-- **Evaluating model performance** using RMSE, MAE, and R²
+- **Evaluating model performance** using RMSE, MAE, and $R^2$
 
 ---
 
@@ -42,12 +42,12 @@ The `stocksr` package offers tools for preprocessing, analyzing, and modeling S&
   Trains models using default or customizable parameters via the `caret` package.
 
 - **Performance comparison**  
-  Computes error metrics (RMSE, MAE, R²) to benchmark models across different sectors.
+  Computes error metrics (RMSE, MAE, $R^2$) to benchmark models across different sectors.
 
 - **Visualization**  
   Generates plots showing predicted vs actual sector index values and feature importance rankings.
   
-  ## Overview
+## Overview
 
 The `load_and_preprocess_data()` function in the **stocksr** package is designed to load historical S&P 500 stock price data from an Excel file and organize it into **sector-wise groups**. 
 
@@ -65,18 +65,18 @@ This function is especially useful for:
 
 The function performs the following steps:
 
-- 📥 **Reads** an Excel file where:
+-  **Reads** an Excel file where:
   - Rows represent daily price observations
   - Columns represent individual companies
 
-- 🏷️ **Maps** each company to its corresponding sector  
+- **Maps** each company to its corresponding sector  
   _(e.g., Energy, Health Care)_
 
-- 🧾 **Creates** a data frame for each sector that includes:
+- **Creates** a data frame for each sector that includes:
   - `Date` as the first column
   - Stock prices of the companies in that sector
 
-- 📦 **Returns** a named list of sector-specific data frames
+- **Returns** a named list of sector-specific data frames
 ```{r example}
 # Load and preprocess
 sectors_data <- load_and_preprocess_data(df_cleaned2)
@@ -84,14 +84,14 @@ sectors_data <- load_and_preprocess_data(df_cleaned2)
 # View available sectors
 names(sectors_data)
 ```
-## 📊 View a Sample Sector
+## View a Sample Sector
 
 ```{r preview-sector, message = FALSE, warning = FALSE}
 # Preview the first few rows of the Energy sector
 head(sectors_data$Energy)
 ```
 
-## 🗂️ Sector Mapping Reference
+## Sector Mapping Reference
 
 The `load_and_preprocess_data()` function internally maps companies to the following sectors:
 
@@ -99,7 +99,7 @@ The `load_and_preprocess_data()` function internally maps companies to the follo
 - **Health Care:** Johnson & Johnson, UnitedHealth Group, Eli Lilly, Pfizer, Merck & Company, etc.
 
 
-## 📦 Return Value
+## Return Value
 
 The function returns a **named list of data frames**, where each name corresponds to a sector.
 
@@ -114,11 +114,11 @@ Each sector data frame contains:
 str(sectors_data$Energy)
 ```
 
-## 📈 Calculating Sector Index from S&P 500 Data
+## Calculating Sector Index from S&P 500 Data
 
 The `calculate_sector_index()` function computes the **average stock price across all companies in a sector** for each date, creating a simple sector-level time series. This is especially useful as input for forecasting or machine learning models.
 
-### 🔍 How It Works
+### How It Works
 
 - Takes a **sector-specific data frame** (e.g., `sectors_data$Energy`) created using `load_and_preprocess_data()`
 - Handles missing values using linear interpolation (`na.approx`) and bidirectional filling (`fill`)
@@ -127,7 +127,7 @@ The `calculate_sector_index()` function computes the **average stock price acros
   - `Date`: The trading date
   - `sector_index`: The average of all company prices in that sector
 
-### 🧪 Apply to this Data
+### Apply to this Data
 
 ```{r calculate-sector-index, message = FALSE, warning = FALSE}
 # Compute sector index for the Energy sector
@@ -137,15 +137,15 @@ tech_index <- calculate_sector_index(sectors_data$Energy)
 head(tech_index)
 ```
 
-## 📊 Calculating Technical Indicators for Sector Index
+## Calculating Technical Indicators for Sector Index
 
 The `calculate_technical_indicators()` function in the `stocksr` package enriches a sector index time series with widely used technical indicators. These features are valuable for capturing patterns like momentum, trend, and volatility—key components for predictive modeling in finance.
 
-### 🧠 What Are Technical Indicators?
+### What Are Technical Indicators?
 
 The function calculates the following indicators:
 
-#### ✅ **Daily Returns**
+#### *Daily Returns**
 
 The daily return \( R_t \) is computed as the percent change from the previous day's index:
 
@@ -158,7 +158,7 @@ Where:
 - \( R_t \) is the return on day \( t \)
 
 
-#### ✅ **Simple Moving Averages (SMA)**
+#### *Simple Moving Averages (SMA)**
 
 The SMA over \( n \) days is:
 
@@ -169,7 +169,7 @@ The SMA over \( n \) days is:
 Used for smoothing trends over time. The function includes:
 - SMA over 5, 10, and 20 days
 
-#### ✅ **Exponential Moving Averages (EMA)**
+#### *Exponential Moving Averages (EMA)**
 
 The EMA assigns more weight to recent prices. It's calculated recursively as:
 
@@ -182,7 +182,7 @@ Where \( \alpha = \frac{2}{n+1} \) is the smoothing factor.
 The function includes:
 - EMA over 5 and 10 days
 
-#### ✅ **Rolling Volatility**
+#### **Rolling Volatility**
 
 The volatility (standard deviation) over a rolling window of \( n \) days:
 
@@ -193,7 +193,7 @@ The volatility (standard deviation) over a rolling window of \( n \) days:
 Computed for 5 and 10-day windows.
 
 
-#### ✅ **Relative Strength Index (RSI)**
+#### **Relative Strength Index (RSI)**
 
 The RSI measures the magnitude of recent gains and losses:
 
@@ -203,7 +203,7 @@ The RSI measures the magnitude of recent gains and losses:
 
 Used to identify overbought (RSI > 70) or oversold (RSI < 30) conditions.
 
-#### ✅ **Lagged Features**
+#### **Lagged Features**
 
 For time series models, the function creates lagged values:
 
@@ -213,7 +213,7 @@ For time series models, the function creates lagged values:
 These help capture short-term dependencies and trends.
 
 
-### ⚙️ Apply to Sector Data
+### Apply to Sector Data
 
 ```{r sector-tech-indicators, message = FALSE, warning = FALSE}
 tech_features <- calculate_technical_indicators(tech_index)
@@ -223,22 +223,22 @@ head(tech_features)
 
 These engineered features are ready to be used in time series forecasting, machine learning pipelines, or financial dashboarding.
 
-## 🌲 Random Forest Modeling for Sector Index Prediction
+## Random Forest Modeling for Sector Index Prediction
 
 The `build_random_forest_model()` function trains a **Random Forest regression model** to predict a sector's daily index using engineered features such as returns, lag values, and technical indicators. It evaluates the model using standard performance metrics and provides feature importance to interpret the model.
 
-### 🧠 What is a Random Forest?
+### What is a Random Forest?
 
 A **Random Forest** is an ensemble machine learning algorithm that builds multiple decision trees and combines their predictions. In regression tasks, it averages the results from each tree to provide a robust, stable prediction.
 
 **Why use Random Forests for financial data?**
 
-- ✅ Handles non-linear relationships between features and response  
-- ✅ Robust to noise and overfitting  
-- ✅ Provides built-in feature importance for interpretation  
-- ✅ Performs well on datasets with many engineered variables (like technical indicators)
+- Handles non-linear relationships between features and response  
+- Robust to noise and overfitting  
+- Provides built-in feature importance for interpretation  
+- Performs well on datasets with many engineered variables (like technical indicators)
 
-### ⚙️ How the Function Works
+### How the Function Works
 
 The `build_random_forest_model()` function performs the following steps:
 
@@ -266,14 +266,14 @@ The `build_random_forest_model()` function performs the following steps:
 5. **Feature Importance**:
    - Displays top variables ranked by `IncNodePurity`
 
-### 🧪 Apply to Your Data
+### Apply to Your Data
 
 ```{r build-rf-model, message = FALSE, warning = FALSE}
 # Train and evaluate the model
 rf_results <- build_random_forest_model(tech_features, "Energy")
 ```
 
-### 📦 Output
+### Output
 
 The function returns a named list:
 

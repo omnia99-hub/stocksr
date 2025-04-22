@@ -1,0 +1,93 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# stocksr
+
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/omnia99-hub/stocksr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/omnia99-hub/stocksr/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
+The **`stocksr`** R package is designed to facilitate the cleaning, transformation, analysis, and modeling of sector-level stock market data, specifically leveraging S&P 500 daily price data (2010–2020). It is useful for financial data scientists, analysts, and students exploring time-series modeling, technical indicators, and sector-based financial insights.
+------------------------------------------------------------------------
+## Overview
+This package provides a comprehensive framework to:
+-   Load and clean raw stock data from Excel files
+-   Segment data by market sectors (e.g., Technology, Healthcare)
+-   Compute key technical indicators (e.g., MACD, RSI, Bollinger Bands)
+-   Construct machine learning models such as Random Forests
+-   Compare model performance across different market sectors
+
+### Data Preparation
+-   `load_and_preprocess_data()`: Load data and organize by sectors.
+-   `calculate_sector_index()`: Aggregate individual stock prices into sector-level index series.
+
+### Feature Engineering
+-   `calculate_technical_indicators()`: Compute popular technical indicators (RSI, MACD, etc.) for each sector.
+- `prepare_data_for_lstm()`: Format data into 3D sequences for LSTM input.
+
+### Modeling
+-   `build_random_forest_model()`: Train a Random Forest model to predict stock movements based on engineered features.
+
+
+## Installation
+
+You can install the development version of stocksr from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("pak")
+pak::pak("omnia99-hub/stocksr")
+```
+
+## Example
+
+```{r }
+devtools::load_all(".")
+library(stocksr)
+
+```
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(readxl)
+```
+
+# Step 1: Load and preprocess raw CSV data
+```{r}
+data(df_cleaned2)
+sectors <- load_and_preprocess_data(df_cleaned2)
+head(sectors)
+```
+
+
+# Step 2: Calculate sector index for Technology
+```{r}
+health_care <- calculate_sector_index(sectors[["Health Care"]])
+head(health_care)
+```
+
+
+# Step 3: Generate technical indicators
+```{r}
+features <- calculate_technical_indicators(health_care)
+head(features)
+```
+
+# Step 4: Train a Forecast random forest model
+```{r}
+results <- build_random_forest_model(features, sector_name = "Health Care")
+```
+
+
