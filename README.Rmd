@@ -68,7 +68,8 @@ library(readxl)
 ```{r}
 data(df_cleaned2)
 sectors <- load_and_preprocess_data(df_cleaned2)
-head(sectors)
+# Cleanly preview first few rows of each sector
+head(sectors$Energy,5)
 ```
 
 
@@ -90,4 +91,7 @@ head(features)
 results <- build_random_forest_model(features, sector_name = "Health Care")
 ```
 
+## Information 
 
+* The code in this repository was written by Shalu Shalu, Akhila Akkala, 
+Omnia Dafalla, and Amanda Wijesinghe.

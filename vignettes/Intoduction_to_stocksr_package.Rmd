@@ -1,6 +1,6 @@
 ---
 title: "Intoduction_to_stocksr_package"
-output: rmarkdown::html_vignette
+output: rmarkdown::pdf_document
 vignette: >
   %\VignetteIndexEntry{Intoduction_to_stocksr_package}
   %\VignetteEngine{knitr::rmarkdown}
@@ -19,6 +19,11 @@ library(stocksr)
 ```
 
 ## Overview
+
+### GitHub Repository - stocksr R Package 
+
+[https://github.com/omnia99-hub/stocksr.git](https://github.com/omnia99-hub/stocksr.git)
+
 
 The `stocksr` package offers tools for preprocessing, analyzing, and modeling S&P 500 stock data organized by sector. It simplifies the end-to-end workflow of:
 
@@ -290,7 +295,57 @@ This modeling function is a key part of the `stocksr` pipeline and can be extend
 ```{r}
 # Step 3: View results
 rf_results$rmse
+rf_results$mae
 rf_results$r2
-head(rf_results$feature_importance)
+```
+The model achieved strong predictive performance:
+
+The Root Mean Squared Error (RMSE) is approximately 0.769, indicating that, on average, the model's predicted sector index values deviate from the actual values by less than one unit.
+The Mean Absolute Error (MAE) is about 0.527, meaning that the model's absolute prediction errors are slightly more than half a unit, demonstrating consistency in predictions.
+Importantly, the R-squared (R²) value is approximately 0.996, suggesting that 99.6% of the variance in the Energy sector index is captured by the model.
+These results confirm that the Random Forest model provides an excellent fit for the sector index forecasting task based on the engineered technical indicators.
+
+## Graph Descriptions
+```{r}
+# Plot 1: Actual vs Predicted
+rf_results$prediction_plot
+```
+### Energy Sector; Random Forest Predictions
+
+This graph compares the actual and predicted sector index values over time for the Energy sector.
+
+- **X-axis**: Date (spanning from 2010 to 2020)
+- **Y-axis**: Sector Index (average stock price for the sector)
+- **Lines**:
+  - **Actual**: True observed sector index.
+  - **Predicted**: Values predicted by the Random Forest model.
+
+The Random Forest model achieved a high R² value of approximately **0.996**, demonstrating excellent predictive accuracy and capturing the overall trend and fluctuations of the Energy sector.
+
+```{r}
+# Plot 2: Feature Importance
+rf_results$importance_plot
 ```
 
+### Top 10 Important Features – Energy Sector
+
+This bar chart presents the **top 10 most influential features** for predicting the Energy sector index, ranked by importance (IncNodePurity).
+
+- Features such as `EMA10`, `lag_2`, `MACD_signal`, and `log_return_lag_1` were among the most predictive.
+- Moving averages (EMA, MA) and lagged return features dominate the importance ranking, highlighting their relevance in financial time series forecasting.
+- The importance scores help interpret the model and understand which indicators drive sector index changes.
+
+## Final Conclusion
+
+The `stocksr` package offers a complete and streamlined workflow for S&P 500 sector-level financial modeling.  
+It covers key stages including:
+
+- Loading and organizing raw company-level stock price data,
+- Creating sector-wise aggregated indices,
+- Engineering predictive technical indicators,
+- Building high-accuracy Random Forest models for forecasting,
+- Interpreting models through visualization and feature importance analysis.
+
+The Random Forest models built using `stocksr` demonstrate strong performance, with R² scores typically exceeding **0.99**, making it a robust tool for both academic research and practical financial analysis.
+
+With an easy-to-use interface and solid machine learning integration, `stocksr` empowers users to efficiently transition from raw financial data to actionable sector forecasts.
