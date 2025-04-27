@@ -32,8 +32,8 @@ create_test_data <- function(days = 500) {
   # Healthcare companies (less volatile)
   jnj <- 150 + cumsum(rnorm(length(dates), mean = 0.03, sd = 0.7)) +
     5 * sin(seq(0, 10, length.out = length(dates)))
-  unitedhealthcare <- 140 + cumsum(rnorm(length(dates), mean = 0.04, sd = 0.8)) +
-    6 * sin(seq(0, 10, length.out = length(dates)))
+  unitedhealthcare <- 140 + cumsum(rnorm(length(dates), mean = 0.04, sd = 0.8))
+  + 6 * sin(seq(0, 10, length.out = length(dates)))
   eli_lilly <- 130 + cumsum(rnorm(length(dates), mean = 0.05, sd = 0.6)) +
     4 * sin(seq(0, 10, length.out = length(dates)))
   pfizer <- 120 + cumsum(rnorm(length(dates), mean = 0.02, sd = 0.9)) +
@@ -41,25 +41,26 @@ create_test_data <- function(days = 500) {
   merck <- 125 + cumsum(rnorm(length(dates), mean = 0.03, sd = 0.8)) +
     5 * sin(seq(0, 10, length.out = length(dates)))
 
-  # Create data frame - use explicit names with check.names=FALSE to prevent R from modifying them
+  # Create data frame - use explicit names with check.names=FALSE to
+  # prevent R from modifying them
   df <- data.frame(
     Date = dates,
-    "exxon mobil" = exxon,
+    "exxon_mobil" = exxon,
     "chevron" = chevron,
     "conocophillips" = conoco,
     "schlumberger" = schlumberger,
-    "eog res." = eog,
-    "johnson & johnson" = jnj,
-    "unitedhealth group" = unitedhealthcare,
-    "eli lilly" = eli_lilly,
+    "eog_res." = eog,
+    "johnson_&_johnson" = jnj,
+    "unitedhealth_group" = unitedhealthcare,
+    "eli_lilly" = eli_lilly,
     "pfizer" = pfizer,
-    "merck & company" = merck,
+    "merck_&_company" = merck,
     check.names = FALSE  # This is the key part to keep names as is
   )
 
   # Add some NA values to test NA handling
   for (col in 2:ncol(df)) {
-    na_indices <- sample(1:nrow(df), 20)
+    na_indices <- sample(seq_len(nrow(df)), 20)
     df[na_indices, col] <- NA
   }
 
@@ -72,9 +73,11 @@ test_that("Test data creation works", {
 
   expect_equal(ncol(df_cleaned2), 11)
 
-  # Check names more flexibly - test for either the original name or the R converted name
-  expect_true(any(c("exxon mobil", "exxon.mobil") %in% colnames(df_cleaned2)))
-  expect_true(any(c("johnson & johnson", "johnson..johnson") %in% colnames(df_cleaned2)))
+  # Check names more flexibly - test for either the original name or the
+  # R converted name
+  expect_true(any(c("exxon_mobil", "exxon.mobil") %in% colnames(df_cleaned2)))
+  expect_true(any(c("johnson_&_johnson", "johnson..johnson")
+                  %in% colnames(df_cleaned2)))
   expect_equal(nrow(df_cleaned2), 100)
 })
 
@@ -89,7 +92,7 @@ test_that("Data handling functions can be mocked", {
   # Define mock prepare_data_for_lstm
   mock_prepare_data <- function(data, time_steps = 5) {
     # Create mock tensors and return structure
-    if(requireNamespace("torch", quietly = TRUE)) {
+    if (requireNamespace("torch", quietly = TRUE)) {
       x <- torch::torch_randn(c(10, time_steps, 4))
       y <- torch::torch_randn(c(10))
     } else {
@@ -118,8 +121,10 @@ test_that("Data handling functions can be mocked", {
 
   # Test basic structure - avoid tensor operations that might fail
   expect_true(is.list(prepared_data))
-  expect_true(all(c("target_mean", "target_sd", "feature_names") %in% names(prepared_data)))
-  expect_equal(prepared_data$feature_names, c("returns", "lag_1", "lag_2", "lag_5"))
+  expect_true(all(c("target_mean", "target_sd", "feature_names")
+                  %in% names(prepared_data)))
+  expect_equal(prepared_data$feature_names,
+               c("returns", "lag_1", "lag_2", "lag_5"))
   expect_equal(length(prepared_data$dates), 30)
 })
 
@@ -128,7 +133,7 @@ test_that("LSTM model architecture can be tested", {
   skip_if_not(requireNamespace("torch", quietly = TRUE), "torch not available")
 
   # Define a simplified LSTM model for testing
-  if(requireNamespace("torch", quietly = TRUE)) {
+  if (requireNamespace("torch", quietly = TRUE)) {
     # Create a test model
     test_model <- torch::nn_module(
       "TestModel",
@@ -144,7 +149,7 @@ test_that("LSTM model architecture can be tested", {
         out <- self$lstm(x, list(h0, c0))
         out <- out[[1]][, out[[1]]$size(2), ]
         out <- self$fc(out)
-        return(out)
+        out
       }
     )
 
@@ -156,7 +161,7 @@ test_that("LSTM model architecture can be tested", {
     expect_true(length(model$parameters) > 0)
 
     # Create a simple input tensor and test forward pass
-    input <- torch::torch_randn(c(2, 5, 4))  # batch_size=2, seq_len=5, input_dim=4
+    input <- torch::torch_randn(c(2, 5, 4)) # batch_size=2,seq_len=5,input_dim=4
     output <- model(input)
 
     # Check output dimensions in a more careful way

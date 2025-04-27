@@ -98,7 +98,7 @@ build_random_forest_model <- function(sector_data, sector_name) {
     scale_color_manual(values = c("Actual" = "blue", "Predicted" = "red")) +
     theme_minimal()
 
-  #print(p)
+
 
   # Get importance - corrected method
   imp <- randomForest::importance(rf_model)
@@ -118,7 +118,7 @@ build_random_forest_model <- function(sector_data, sector_name) {
     labs(title = paste("Top 10 Important Features -", sector_name)) +
     theme_minimal()
 
-  #print(imp_plot)
+
 
   list(
     model = rf_model,

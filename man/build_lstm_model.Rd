@@ -25,7 +25,7 @@ A list containing:
 \description{
 This function prepares sequential data using lagged features, scales the
 features and target, trains an LSTM model, and evaluates its performance.
-Metrics like RMSE, MAE, and R² are reported, and a plot of actual vs.
+Metrics like RMSE, MAE, and R2 are reported, and a plot of actual vs.
 predicted values is generated.
 }
 \details{

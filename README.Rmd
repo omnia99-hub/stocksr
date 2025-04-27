@@ -19,12 +19,12 @@ knitr::opts_chunk$set(
 [![R-CMD-check](https://github.com/omnia99-hub/stocksr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/omnia99-hub/stocksr/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-The **`stocksr`** R package is designed to facilitate the cleaning, transformation, analysis, and modeling of sector-level stock market data, specifically leveraging S&P 500 daily price data (2010–2020). It is useful for financial data scientists, analysts, and students exploring time-series modeling, technical indicators, and sector-based financial insights.
+The **stocksr** R package provides tools for cleaning, transforming, analyzing, and modeling sector-level stock market data, specifically focused on the Energy and Healthcare sectors using S&P 500 daily price data (2010–2020). It supports financial data analysis, time-series forecasting, and feature engineering for sector-specific insights.
 ------------------------------------------------------------------------
 ## Overview
 This package provides a comprehensive framework to:
 -   Load and clean raw stock data from Excel files
--   Segment data by market sectors (e.g., Technology, Healthcare)
+-   Segment data by market sectors (e.g., Energy, Healthcare)
 -   Compute key technical indicators (e.g., MACD, RSI, Bollinger Bands)
 -   Construct machine learning models such as Random Forests
 -   Compare model performance across different market sectors
@@ -39,6 +39,7 @@ This package provides a comprehensive framework to:
 
 ### Modeling
 -   `build_random_forest_model()`: Train a Random Forest model to predict stock movements based on engineered features.
+- `build_lstm_model()`: Train a LSTM to predict stock movements based on engineered features.
 
 
 ## Installation
@@ -68,7 +69,6 @@ library(dplyr)
 ```{r}
 data(df_cleaned2)
 sectors <- load_and_preprocess_data(df_cleaned2)
-# Cleanly preview first few rows of each sector
 head(sectors$Healthcare,5)
 head(sectors$Energy,5)
 ```
@@ -96,12 +96,44 @@ head(features_energy)
 # Step 4: Train the random forest model
 ```{r}
 results_healtcare <- build_random_forest_model(features_healthcare, sector_name = "Healthcare")
+results_healtcare$prediction_plot
+results_healtcare$importance_plot
 
 results_energy <- build_random_forest_model(features_energy, sector_name = "Energy")
+results_energy$prediction_plot
+results_energy$importance_plot
 
 
 ```
+# Step 5: Train the LSTM model
+```{r}
+lstm_results_healthcare <- build_lstm_model(health_care, sector_name = "Healthcare")
+lstm_results_energy <- build_lstm_model(energy, sector_name = "Energy")
+```
 
+##Notes
+
+Input data must have daily stock prices with appropriate company names.
+
+The calculate_technical_indicators function generates lagged features, moving averages, volatility, and MACD indicators needed for modeling.
+
+build_lstm_model and build_random_forest_model internally handle training and performance evaluation.
+
+##Output
+
+Each modeling function returns:
+
+Root Mean Squared Error (RMSE)
+
+Mean Absolute Error (MAE)
+
+R-squared (R²)
+
+Trained model object
+
+##Conclusion
+
+The stocksr package provides a fast and easy workflow to simulate sector-level stock forecasting, focusing only on Energy and Healthcare sectors.
 
 ## Information 
 

@@ -6,13 +6,13 @@ Authors@R:
     person("First", "Last", email = "name@example.com", role = c("aut", "cre"))
 Description: 
     The 'stocksr' package provides tools to load, process, and analyze S&P 500 
-    stock price data grouped by sectors (e.g., Technology, Energy, Health Care). 
-    It computes sector-level indices, enriches the data with technical indicators, 
-    and fits Random Forest models to predict sector performance. The package 
-    supports model tuning using time-series cross-validation and provides 
-    performance metrics (RMSE, MAE, R²) for comparison across sectors. 
-    Functions are designed to be modular and support parallel computation 
-    for scalable analysis.
+    stock price data specifically for the Energy and Healthcare sectors. 
+    It computes sector-level indices, enriches the data with technical 
+    indicators, and fits Random Forest and LSTM models to predict sector 
+    performance. The package includes functions for data cleaning, feature 
+    engineering, time-series preparation, model building, and performance 
+    evaluation (RMSE, MAE, R²). Designed for ease of use and scalability in 
+    sector-based financial analysis.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -33,7 +33,9 @@ Imports:
 Suggests:
     testthat (>= 3.0.0),
     knitr,
-    rmarkdown
+    rmarkdown,
+    gridExtra,
+    ranger
 Depends: R (>= 4.0.0)
 LazyDataCompression: xz
 Config/testthat/edition: 3

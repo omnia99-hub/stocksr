@@ -46,17 +46,16 @@ prepare_data_for_lstm <- function(data, time_steps = 10) {
   data$returns[1] <- 0  # Set first value to 0 instead of NA
 
   # Create lagged features
-  data$lag_1 <- lag(data$sector_index, 1)
-  data$lag_2 <- lag(data$sector_index, 2)
-  data$lag_5 <- lag(data$sector_index, 5)
+  data$lag_1 <- dplyr::lag(data$sector_index, 1)
+  data$lag_2 <- dplyr::lag(data$sector_index, 2)
+  data$lag_5 <- dplyr::lag(data$sector_index, 5)
 
   # Remove NAs
-  data <- data %>%
-    filter(!is.na(lag_5))
+  data <- data[!is.na(data$lag_5), ]
 
   # Prepare features
   features_df <- data %>%
-    select(returns, lag_1, lag_2)
+    select(returns, lag_1, lag_2, lag_5)
 
   # Scale features
   features_mat <- as.matrix(features_df)
