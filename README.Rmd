@@ -101,15 +101,6 @@ results_energy <- build_random_forest_model(features_energy, sector_name = "Ener
 
 
 ```
-```{r}
-lstm_healthcare_data <- prepare_data_for_lstm(health_care, time_steps=10)
-```
-
-
-
-
-
-
 
 
 ## Information 
