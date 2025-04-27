@@ -48,7 +48,7 @@ build_random_forest_model <- function(sector_data, sector_name) {
 
   # Split data (80% train, 20% test)
   set.seed(42)
-  train_index <- createDataPartition(target, p = 0.8, list = FALSE)
+  train_index <- caret::createDataPartition(target, p = 0.8, list = FALSE)
   x_train <- features[train_index, ]
   x_test <- features[-train_index, ]
   y_train <- target[train_index]
@@ -114,7 +114,7 @@ build_random_forest_model <- function(sector_data, sector_name) {
     y = Importance
   )) +
     geom_bar(stat = "identity", fill = "steelblue") +
-    coord_flip() +
+    ggplot2::coord_flip() +
     labs(title = paste("Top 10 Important Features -", sector_name)) +
     theme_minimal()
 

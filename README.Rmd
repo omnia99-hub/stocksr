@@ -111,7 +111,7 @@ lstm_results_healthcare <- build_lstm_model(health_care, sector_name = "Healthca
 lstm_results_energy <- build_lstm_model(energy, sector_name = "Energy")
 ```
 
-##Notes
+## Notes
 
 Input data must have daily stock prices with appropriate company names.
 
@@ -119,7 +119,7 @@ The calculate_technical_indicators function generates lagged features, moving av
 
 build_lstm_model and build_random_forest_model internally handle training and performance evaluation.
 
-##Output
+## Output
 
 Each modeling function returns:
 
@@ -131,7 +131,7 @@ R-squared (R²)
 
 Trained model object
 
-##Conclusion
+## Conclusion
 
 The stocksr package provides a fast and easy workflow to simulate sector-level stock forecasting, focusing only on Energy and Healthcare sectors.
 
