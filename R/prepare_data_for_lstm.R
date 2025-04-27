@@ -36,21 +36,6 @@
 #' @importFrom torch torch_tensor torch_float32
 #' @importFrom stats filter
 #'
-#' @examples
-#' library(torch)
-#'
-#' # Example with fake data
-#' df <- data.frame(
-#'   Date = seq(as.Date("2020-01-01"), by = "day", length.out = 100),
-#'   sector_index = cumsum(rnorm(100))
-#' )
-#'
-#' prepared <- prepare_data_for_lstm(df, time_steps = 10)
-#' x <- prepared$x
-#' y <- prepared$y
-#'
-#' print(dim(x))  # Should show (90, 10, 4)
-#' print(length(y))  # Should be 90
 #'
 #' @export
 
@@ -71,7 +56,7 @@ prepare_data_for_lstm <- function(data, time_steps = 10) {
 
   # Prepare features
   features_df <- data %>%
-    select(returns, lag_1, lag_2, lag_5)
+    select(returns, lag_1, lag_2)
 
   # Scale features
   features_mat <- as.matrix(features_df)

@@ -32,20 +32,6 @@
 #'
 #' @importFrom torch torch_manual_seed nn_mse_loss optim_adam with_no_grad
 #'
-#' @examples
-#' library(torch)
-#' library(ggplot2)
-#'
-#' # Example with synthetic data
-#' df <- data.frame(
-#'   Date = seq(as.Date("2020-01-01"), by = "day", length.out = 150),
-#'   sector_index = cumsum(rnorm(150))
-#' )
-#'
-#' results <- build_lstm_model(df, sector_name = "Technology", time_steps = 10)
-#'
-#' print(results$rmse)
-#' print(results$r2)
 #'
 #' @export
 
@@ -262,6 +248,8 @@ build_lstm_model <- function(sector_data, sector_name, time_steps = 10) {
       scale_color_manual(values = c("Actual" = "blue", "Predicted" = "red")) +
       theme_minimal()
 
+    print(p)
+
 
 
     list(
@@ -273,14 +261,16 @@ build_lstm_model <- function(sector_data, sector_name, time_steps = 10) {
     )
 
   }, error = function(e) {
+
+
     cat("Error building LSTM model:", e$message, "\n")
     list(
       model = "error",
       rmse = NA,
       mae = NA,
       r2 = NA,
-      feature_names = "error",
-      p = p
+      feature_names = "error"
+
     )
   })
 }

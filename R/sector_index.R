@@ -36,11 +36,11 @@ calculate_sector_index <- function(sector_df) {
   sector_df$Date <- as.Date(sector_df$Date)
   company_cols <- setdiff(colnames(sector_df), "Date")
   sector_df <- sector_df %>%
-    mutate(across(all_of(company_cols), ~ na.approx(., na.rm = FALSE))) %>%
+    dplyr::mutate(across(all_of(company_cols), ~ na.approx(., na.rm = FALSE))) %>%
     tidyr::fill(all_of(company_cols), .direction = "downup")
 
   index_df <- sector_df %>%
-    mutate(sector_index = rowMeans(select(., all_of(company_cols)),
+    dplyr::mutate(sector_index = rowMeans(select(., all_of(company_cols)),
       na.rm = TRUE
     )) %>%
     select(Date, sector_index)

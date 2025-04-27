@@ -61,7 +61,7 @@ library(stocksr)
 ```{r}
 library(ggplot2)
 library(dplyr)
-library(readxl)
+
 ```
 
 # Step 1: Load and preprocess raw CSV data
@@ -69,27 +69,48 @@ library(readxl)
 data(df_cleaned2)
 sectors <- load_and_preprocess_data(df_cleaned2)
 # Cleanly preview first few rows of each sector
+head(sectors$Healthcare,5)
 head(sectors$Energy,5)
 ```
 
 
-# Step 2: Calculate sector index for Technology
+# Step 2: Calculate sector index 
 ```{r}
-health_care <- calculate_sector_index(sectors[["Health Care"]])
+health_care <- calculate_sector_index(sectors[["Healthcare"]])
 head(health_care)
+energy <- calculate_sector_index(sectors[["Energy"]])
+head(energy)
 ```
 
 
 # Step 3: Generate technical indicators
 ```{r}
-features <- calculate_technical_indicators(health_care)
-head(features)
+features_healthcare <- calculate_technical_indicators(health_care)
+head(features_healthcare)
+
+features_energy <- calculate_technical_indicators(energy)
+head(features_energy)
+
 ```
 
-# Step 4: Train a Forecast random forest model
+# Step 4: Train the random forest model
 ```{r}
-results <- build_random_forest_model(features, sector_name = "Health Care")
+results_healtcare <- build_random_forest_model(features_healthcare, sector_name = "Healthcare")
+
+results_energy <- build_random_forest_model(features_energy, sector_name = "Energy")
+
+
 ```
+```{r}
+lstm_healthcare_data <- prepare_data_for_lstm(health_care, time_steps=10)
+```
+
+
+
+
+
+
+
 
 ## Information 
 

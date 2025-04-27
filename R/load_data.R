@@ -27,20 +27,21 @@ load_and_preprocess_data <- function(df_cleaned2) {
 
   # Only include Energy and Healthcare sectors
   sector_mapping <- list(
-    "exxon mobil" = "Energy",
+    "exxon_mobil" = "Energy",
     "chevron" = "Energy",
     "conocophillips" = "Energy",
     "schlumberger" = "Energy",
-    "eog res." = "Energy",
-    "johnson & johnson" = "Health Care",
-    "unitedhealth group" = "Health Care",
-    "eli lilly" = "Health Care",
-    "pfizer" = "Health Care",
-    "merck & company" = "Health Care"
+    "eog_res." = "Energy",
+    "johnson_&_johnson" = "Healthcare",
+    "unitedhealth_group" = "Healthcare",
+    "eli_lilly" = "Healthcare",
+    "pfizer" = "Healthcare",
+    "merck_&_company" = "Healthcare"
   )
 
   sectors <- list()
   sector_names <- unique(unlist(sector_mapping))
+  print(sector_names)
 
   for (sector in sector_names) {
     sector_companies <- names(sector_mapping)[

@@ -40,19 +40,3 @@ visualizes predictions against actual values.
 - Applies early stopping with patience.
 - Plots predicted vs. actual values over time.
 }
-\examples{
-library(torch)
-library(ggplot2)
-
-# Example with synthetic data
-df <- data.frame(
-  Date = seq(as.Date("2020-01-01"), by = "day", length.out = 150),
-  sector_index = cumsum(rnorm(150))
-)
-
-results <- build_lstm_model(df, sector_name = "Technology", time_steps = 10)
-
-print(results$rmse)
-print(results$r2)
-
-}
