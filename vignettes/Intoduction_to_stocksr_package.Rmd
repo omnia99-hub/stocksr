@@ -16,6 +16,8 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(stocksr)
+library(torch)
+library(ggplot2)
 ```
 
 ## Overview
@@ -275,7 +277,7 @@ The `build_random_forest_model()` function performs the following steps:
 
 ```{r build-rf-model, message = FALSE, warning = FALSE}
 # Train and evaluate the model
-rf_results <- build_random_forest_model(tech_features, "Energy")
+rf_energy <- build_random_forest_model(tech_features, "Energy")
 ```
 
 ### Output
@@ -294,9 +296,9 @@ This modeling function is a key part of the `stocksr` pipeline and can be extend
 
 ```{r}
 # Step 3: View results
-rf_results$rmse
-rf_results$mae
-rf_results$r2
+rf_energy$rmse
+rf_energy$mae
+rf_energy$r2
 ```
 The model achieved strong predictive performance:
 
@@ -308,44 +310,270 @@ These results confirm that the Random Forest model provides an excellent fit for
 ## Graph Descriptions
 ```{r}
 # Plot 1: Actual vs Predicted
-rf_results$prediction_plot
+rf_energy$prediction_plot
 ```
-### Energy Sector; Random Forest Predictions
+### Random Forest Predictions - Energy Sector
 
-This graph compares the actual and predicted sector index values over time for the Energy sector.
+The plot shows the **actual** versus **predicted** sector index values for the Energy sector.
 
-- **X-axis**: Date (spanning from 2010 to 2020)
-- **Y-axis**: Sector Index (average stock price for the sector)
-- **Lines**:
-  - **Actual**: True observed sector index.
-  - **Predicted**: Values predicted by the Random Forest model.
+- **X-axis**: Date, spanning from 2010 to 2020.
+- **Y-axis**: Sector Index (aggregated stock prices).
 
-The Random Forest model achieved a high R² value of approximately **0.996**, demonstrating excellent predictive accuracy and capturing the overall trend and fluctuations of the Energy sector.
+**Blue Line**:
+- Represents the true historical sector index values.
 
+**Red Line**:
+- Represents the Random Forest model's predicted values.
+
+**Analysis**:
+- The red predicted line closely overlays the blue actual line throughout the entire period.
+- Random Forest captures both long-term upward and downward trends accurately.
+- Short-term fluctuations (small ups and downs) are also modeled very well.
+- Only minimal deviation between the predicted and actual curves is observed, demonstrating the model's extremely high predictive accuracy (R^2 = 0.9967).
+
+## Random Forest Feature Importance - Energy Sector
 ```{r}
 # Plot 2: Feature Importance
-rf_results$importance_plot
+rf_energy$importance_plot
 ```
 
-### Top 10 Important Features – Energy Sector
+The Random Forest model identified the most important features for predicting the Energy sector index:
 
-This bar chart presents the **top 10 most influential features** for predicting the Energy sector index, ranked by importance (IncNodePurity).
+- **log_returns** is the single most critical predictor, showing that daily relative changes 
+  in the sector index have the strongest impact on future movements.
+- **log_return_lag_1** also ranks very highly, highlighting that recent momentum carries 
+  significant predictive power.
+- **MACD** and **MACD_signal** demonstrate that momentum and trend reversal indicators 
+  are important for Energy sector behavior.
+- **EMA5** and **MA5** (short-term moving averages) are highly influential, suggesting 
+  that short-term trend smoothing improves forecasting accuracy.
+- **lag_1** and **lag_2** (previous index values) show that the sector exhibits short-term 
+  autocorrelation.
+- **Longer-term moving averages** like **EMA10** and **MA10** are less dominant but still 
+  contribute meaningfully to model predictions.
 
-- Features such as `EMA10`, `lag_2`, `MACD_signal`, and `log_return_lag_1` were among the most predictive.
-- Moving averages (EMA, MA) and lagged return features dominate the importance ranking, highlighting their relevance in financial time series forecasting.
-- The importance scores help interpret the model and understand which indicators drive sector index changes.
+**Overall**, the Energy sector forecasting relies heavily on **recent returns**, **short-term 
+memory**, and **momentum signals** to achieve high predictive performance.
 
-## Final Conclusion
+```{r}
+rf_healthcare <- build_random_forest_model(tech_features, "Healthcare")
+```
 
-The `stocksr` package offers a complete and streamlined workflow for S&P 500 sector-level financial modeling.  
-It covers key stages including:
+```{r}
+rf_healthcare$rmse
+rf_healthcare$mae
+rf_healthcare$r2
+```
 
-- Loading and organizing raw company-level stock price data,
-- Creating sector-wise aggregated indices,
-- Engineering predictive technical indicators,
-- Building high-accuracy Random Forest models for forecasting,
-- Interpreting models through visualization and feature importance analysis.
 
-The Random Forest models built using `stocksr` demonstrate strong performance, with R² scores typically exceeding **0.99**, making it a robust tool for both academic research and practical financial analysis.
+```{r}
+rf_healthcare$prediction_plot
+```
+### Random Forest Predictions - Healthcare Sector
 
-With an easy-to-use interface and solid machine learning integration, `stocksr` empowers users to efficiently transition from raw financial data to actionable sector forecasts.
+The plot shows actual vs predicted Healthcare sector index values.
+
+- **Blue Line**: Actual index values.
+- **Red Line**: Random Forest predicted values.
+
+**Analysis**:
+- The model maintains a tight fit between actual and predicted values from 2010 to 2020.
+- Short-term volatility in Healthcare stocks is captured effectively.
+- The high R^2 value (0.9967) confirms that nearly all variation in the sector index is explained.
+- The visual overlap of the two lines demonstrates excellent performance with minimal forecasting error.
+
+## Random Forest Feature Importance - Health Sector
+```{r}
+rf_healthcare$importance_plot
+```
+The feature importance plot for the Healthcare sector reveals the following:
+
+- **log_returns** is the most dominant feature, showing that daily return rates 
+  have the strongest predictive power for the Healthcare sector index.
+- **log_return_lag_1** ranks second, indicating that short-term return memory 
+  significantly influences future movements.
+- **MACD** and **MACD_signal** confirm that **momentum trends and reversals** are 
+  critical for Healthcare sector behavior.
+- **EMA5** and **MA5** (short-term moving averages) are influential, suggesting 
+  that **recent trend smoothing** aids prediction accuracy.
+- **lag_1** and **lag_2** (past sector index values) emphasize the importance of 
+  **short-term autocorrelation**.
+- **EMA10** and **MA10** (longer-term moving averages) contribute to capturing 
+  broader sector trends but are less dominant.
+
+**Overall**, the Healthcare sector forecasting strongly relies on **recent daily returns**, 
+**short-term momentum indicators**, and **trend-following signals**.
+
+## LSTM Modeling for Sector Index Prediction
+
+### What is an LSTM?
+
+An LSTM is a special type of recurrent neural network (RNN) that can learn 
+long-term dependencies in sequential data. It is widely used in time series 
+forecasting tasks, especially when relationships across many past time steps 
+are important.
+
+### Why use LSTM for financial data?
+
+- Handles sequential dependencies naturally
+- Captures non-linear patterns in stock market behavior
+- Suitable for data with trends, cycles, and lagged effects
+
+---
+
+### How the Function Works
+
+The `build_lstm_model()` function performs the following steps:
+
+1. **Input**: A data frame with:
+   - `Date`
+   - `sector_index` (target)
+   - Lagged features created via `prepare_data_for_lstm()`
+
+2. **Preprocessing**:
+   - Scales features and target to have mean 0 and variance 1.
+   - Organizes data into sequences of length `time_steps`.
+
+3. **Split the data**:
+   - 80% for training
+   - 20% for testing
+   - Time order preserved
+
+4. **Train the LSTM**:
+   - A custom LSTM model is built using `torch::nn_lstm`.
+   - Mean Squared Error (MSE) loss is minimized.
+   - Adam optimizer is used with a learning rate of 0.001.
+   - Early stopping is applied based on validation loss.
+
+5. **Evaluate**:
+   - Calculates RMSE, MAE, and R^2 on the test set.
+   - Plots actual vs predicted sector index values.
+
+---
+
+### Apply to stocks Data
+
+```{r}
+# Train and evaluate the LSTM model for energy
+lstm_energy <- build_lstm_model(tech_index, "Energy", time_steps = 10)
+
+# View model performance
+lstm_energy$rmse
+lstm_energy$r2
+```
+## LSTM Model Results and Interpretation
+
+### Energy Sector - LSTM Model
+
+The LSTM model trained on the Energy sector data achieved the following performance:
+
+- RMSE: 4.5491
+- MAE: 3.0857
+- R^2: 0.9166
+
+The RMSE of approximately 4.55 indicates that, on average, the model's predictions 
+deviate from the actual sector index by about 4.5 units. The MAE of around 3.09 
+shows good consistency in the prediction errors.
+
+An R^2 value of 0.917 suggests that about 91.7 percent of the variance in the Energy 
+sector index is explained by the LSTM model. While not as high as the Random Forest 
+model, the LSTM demonstrates strong predictive capabilities for sequential data.
+
+```{r}
+lstm_energy$prediction_plot
+```
+### LSTM Predictions - Energy Sector
+
+The LSTM prediction plot compares the actual Energy sector index with the LSTM model’s predictions.
+
+- **X-axis**: Dates (2019 to 2021).
+- **Y-axis**: Sector Index.
+
+**Blue Line**:
+- True sector index values.
+
+**Red Line**:
+- LSTM predicted values.
+
+**Analysis**:
+- The red LSTM prediction follows the broad trend of the blue actual data well.
+- Major upswings and downswings are captured, but slight lags and smoothing occur during sharp market movements.
+- The model handles gradual changes accurately but slightly underreacts to rapid spikes.
+- An R^2 value of 0.9166 shows that while the LSTM is highly effective, it is slightly less accurate than Random Forest.
+
+
+
+```{r}
+# Train and evaluate the LSTM model for health care
+lstm_healthcare <- build_lstm_model(tech_index, "Healthcare", time_steps = 10)
+
+# View model performance
+lstm_healthcare$rmse
+lstm_healthcare$r2
+```
+### Healthcare Sector - LSTM Model
+
+The LSTM model trained on the Healthcare sector data produced:
+
+- RMSE: 4.9653
+- MAE: 3.1787
+- R^2: 0.9007
+
+The model achieved an RMSE of approximately 4.97 and an MAE of about 3.18. 
+An R^2 value of 0.901 indicates that about 90 percent of the variation in the 
+Healthcare sector index is explained by the model.
+
+```{r}
+lstm_healthcare$prediction_plot
+```
+### LSTM Predictions - Healthcare Sector
+
+This plot shows actual vs predicted Healthcare sector index values using LSTM.
+
+- **Blue Line**: Actual Healthcare sector index.
+- **Red Line**: Predicted values by LSTM.
+
+**Analysis**:
+- The LSTM model captures overall trends and general patterns very well.
+- However, there are visible lags during periods of sharp price changes or corrections.
+- The R^2 value of 0.9007 indicates strong performance, but some finer movements are missed compared to Random Forest.
+- Overall, the model successfully models the sector dynamics with acceptable prediction error.
+
+
+## Conclusion
+
+The `stocksr` package offers a complete and powerful solution for sector-level 
+financial analysis and forecasting. It provides a streamlined workflow that covers 
+every critical stage of data science in finance:
+
+- **Data Loading**: Seamlessly organizes historical S&P 500 stock data into sector-specific groups.
+- **Feature Engineering**: Automatically generates technical indicators, lagged variables, and volatility measures essential for predictive modeling.
+- **Modeling Pipelines**:
+  - **Random Forest models** achieve outstanding predictive accuracy, with R^2 values consistently exceeding 0.996 across sectors.
+  - **LSTM models** effectively capture sequential and temporal patterns in stock price movements, achieving strong R^2 values above 0.90.
+
+Both modeling approaches complement each other:
+- Random Forests provide exceptional static prediction power based on engineered features.
+- LSTM networks model complex time-dependent behaviors, adapting to market trends and shifts.
+
+The combination of machine learning and deep learning pipelines makes `stocksr` an extremely 
+versatile tool, suitable for:
+
+- Academic research in financial modeling and machine learning,
+- Practical industry applications such as sector forecasting and portfolio optimization,
+- Educational purposes for learning financial time series modeling with real-world data.
+
+**Performance Summary**:
+
+| Sector     | Model           | RMSE   | MAE    | R^2     |
+|:-----------|:----------------|:-------|:-------|:--------|
+| Energy     | Random Forest    | 0.805  | 0.5125 | 0.9967  |
+| Healthcare | Random Forest    | 0.805  | 0.5125 | 0.9967  |
+| Energy     | LSTM             | 4.5491 | 3.0857 | 0.9166  |
+| Healthcare | LSTM             | 4.9653 | 3.1787 | 0.9007  |
+
+In conclusion, `stocksr` empowers users to efficiently transform raw financial data 
+into actionable insights through advanced feature engineering, powerful predictive models, 
+and easy-to-interpret visualizations.  
+It bridges the gap between traditional machine learning and modern deep learning for 
+financial sector analysis, delivering high accuracy and strong practical utility.
