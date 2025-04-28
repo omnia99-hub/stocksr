@@ -85,8 +85,8 @@ test_that("Test data creation works", {
 
 test_that("Data handling functions can be mocked", {
   # Skip if torch isn't available
-  skip_if_not(requireNamespace("torch", quietly = TRUE), "torch not available")
   skip_on_ci()
+  skip_if_not(requireNamespace("torch", quietly = TRUE), "torch not available")
 
   # Create simplified versions of core functions for testing
 
@@ -131,8 +131,8 @@ test_that("Data handling functions can be mocked", {
 
 test_that("LSTM model architecture can be tested", {
   # Skip if torch isn't available
-  skip_if_not(requireNamespace("torch", quietly = TRUE), "torch not available")
   skip_on_ci()
+  skip_if_not(requireNamespace("torch", quietly = TRUE), "torch not available")
 
   # Define a simplified LSTM model for testing
   if (requireNamespace("torch", quietly = TRUE)) {
