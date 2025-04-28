@@ -55,7 +55,7 @@ prepare_data_for_lstm <- function(data, time_steps = 10) {
 
   # Prepare features
   features_df <- data %>%
-    select(returns, data$lag_1, data$lag_2, data$lag_5)
+    select(returns, lag_1, lag_2, lag_5)
 
   # Scale features
   features_mat <- as.matrix(features_df)

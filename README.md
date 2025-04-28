@@ -275,12 +275,70 @@ Step 5: Train the LSTM model
 lstm_results_healthcare <- build_lstm_model(health_care, sector_name = "Healthcare")
 #> 
 #> --- Building LSTM model for Healthcare sector ---
-#> Error building LSTM model:
+#> Epoch 1/30, Train Loss: 0.1986, Val Loss: 0.8675
+#> Epoch 2/30, Train Loss: 0.0205, Val Loss: 0.3333
+#> Epoch 3/30, Train Loss: 0.0131, Val Loss: 0.1971
+#> Epoch 4/30, Train Loss: 0.0091, Val Loss: 0.1567
+#> Epoch 5/30, Train Loss: 0.0090, Val Loss: 0.1265
+#> Epoch 6/30, Train Loss: 0.0084, Val Loss: 0.1109
+#> Epoch 7/30, Train Loss: 0.0083, Val Loss: 0.0926
+#> Epoch 8/30, Train Loss: 0.0081, Val Loss: 0.0931
+#> Epoch 9/30, Train Loss: 0.0080, Val Loss: 0.0905
+#> Epoch 10/30, Train Loss: 0.0078, Val Loss: 0.0800
+#> Epoch 11/30, Train Loss: 0.0072, Val Loss: 0.0807
+#> Epoch 12/30, Train Loss: 0.0071, Val Loss: 0.0789
+#> Epoch 13/30, Train Loss: 0.0077, Val Loss: 0.0735
+#> Epoch 14/30, Train Loss: 0.0071, Val Loss: 0.0728
+#> Epoch 15/30, Train Loss: 0.0069, Val Loss: 0.0798
+#> Epoch 16/30, Train Loss: 0.0073, Val Loss: 0.0627
+#> Epoch 17/30, Train Loss: 0.0069, Val Loss: 0.0680
+#> Epoch 18/30, Train Loss: 0.0074, Val Loss: 0.0804
+#> Epoch 19/30, Train Loss: 0.0070, Val Loss: 0.0543
+#> Epoch 20/30, Train Loss: 0.0063, Val Loss: 0.0606
+#> Epoch 21/30, Train Loss: 0.0065, Val Loss: 0.0607
+#> Epoch 22/30, Train Loss: 0.0068, Val Loss: 0.0576
+#> Epoch 23/30, Train Loss: 0.0062, Val Loss: 0.0521
+#> Epoch 24/30, Train Loss: 0.0067, Val Loss: 0.0651
+#> Epoch 25/30, Train Loss: 0.0064, Val Loss: 0.0545
+#> Epoch 26/30, Train Loss: 0.0062, Val Loss: 0.0426
+#> Epoch 27/30, Train Loss: 0.0060, Val Loss: 0.0416
+#> Epoch 28/30, Train Loss: 0.0061, Val Loss: 0.0404
+#> Epoch 29/30, Train Loss: 0.0066, Val Loss: 0.0584
+#> Epoch 30/30, Train Loss: 0.0060, Val Loss: 0.0420
+#> Model performance:
+#> RMSE: 7.0716 
+#> MAE: 5.1665 
+#> R²: 0.6053
+```
+
+<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
+
+``` r
 lstm_results_energy <- build_lstm_model(energy, sector_name = "Energy")
 #> 
 #> --- Building LSTM model for Energy sector ---
-#> Error building LSTM model:
+#> Epoch 1/30, Train Loss: 0.2680, Val Loss: 0.4747
+#> Epoch 2/30, Train Loss: 0.0283, Val Loss: 0.2330
+#> Epoch 3/30, Train Loss: 0.0173, Val Loss: 0.1826
+#> Epoch 4/30, Train Loss: 0.0141, Val Loss: 0.1669
+#> Epoch 5/30, Train Loss: 0.0138, Val Loss: 0.1631
+#> Epoch 6/30, Train Loss: 0.0138, Val Loss: 0.1608
+#> Epoch 7/30, Train Loss: 0.0138, Val Loss: 0.1499
+#> Epoch 8/30, Train Loss: 0.0137, Val Loss: 0.1308
+#> Epoch 9/30, Train Loss: 0.0127, Val Loss: 0.0998
+#> Epoch 10/30, Train Loss: 0.0122, Val Loss: 0.1272
+#> Epoch 11/30, Train Loss: 0.0120, Val Loss: 0.1306
+#> Epoch 12/30, Train Loss: 0.0120, Val Loss: 0.1151
+#> Epoch 13/30, Train Loss: 0.0116, Val Loss: 0.1187
+#> Epoch 14/30, Train Loss: 0.0119, Val Loss: 0.1257
+#> Early stopping at epoch 14
+#> Model performance:
+#> RMSE: 4.9653 
+#> MAE: 3.1787 
+#> R²: 0.9007
 ```
+
+<img src="man/figures/README-unnamed-chunk-8-2.png" width="100%" />
 
 ## Notes
 
