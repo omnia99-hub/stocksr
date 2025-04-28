@@ -52,60 +52,12 @@ pak::pak("omnia99-hub/stocksr")
 
 ``` r
 devtools::load_all(".")
-#> ℹ Loading stocksr
-#> Warning: package 'caret' was built under R version 4.4.3
-#> Loading required package: ggplot2
-#> Loading required package: lattice
-#> Warning: package 'randomForest' was built under R version 4.4.3
-#> randomForest 4.7-1.2
-#> Type rfNews() to see new features/changes/bug fixes.
-#> 
-#> Attaching package: 'randomForest'
-#> 
-#> The following object is masked from 'package:ggplot2':
-#> 
-#>     margin
-#> Warning: package 'torch' was built under R version 4.4.3
-#> 
-#> Attaching package: 'zoo'
-#> 
-#> The following objects are masked from 'package:base':
-#> 
-#>     as.Date, as.Date.numeric
-#> Warning: package 'ranger' was built under R version 4.4.3
-#> 
-#> Attaching package: 'ranger'
-#> 
-#> The following object is masked from 'package:randomForest':
-#> 
-#>     importance
-#> 
-#> The following object is masked from 'package:stocksr':
-#> 
-#>     importance
 library(stocksr)
 ```
 
 ``` r
 library(ggplot2)
 library(dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> The following object is masked from 'package:randomForest':
-#> 
-#>     combine
-#> The following object is masked from 'package:stocksr':
-#> 
-#>     filter
-#> The following object is masked from 'package:testthat':
-#> 
-#>     matches
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
 ```
 
 # Step 1: Load and preprocess raw CSV data

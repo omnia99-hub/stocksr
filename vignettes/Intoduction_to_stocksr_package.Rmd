@@ -1,6 +1,6 @@
 ---
 title: "Intoduction_to_stocksr_package"
-output: rmarkdown::pdf_document
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Intoduction_to_stocksr_package}
   %\VignetteEngine{knitr::rmarkdown}
@@ -500,8 +500,6 @@ The LSTM prediction plot compares the actual Energy sector index with the LSTM m
 - Major upswings and downswings are captured, but slight lags and smoothing occur during sharp market movements.
 - The model handles gradual changes accurately but slightly underreacts to rapid spikes.
 - An R^2 value of 0.9166 shows that while the LSTM is highly effective, it is slightly less accurate than Random Forest.
-
-
 
 ```{r}
 # Train and evaluate the LSTM model for health care
