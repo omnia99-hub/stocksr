@@ -2,8 +2,12 @@ Package: stocksr
 Type: Package
 Title: Sector-Wise Random Forest Modeling and Analysis for S&P 500 Data
 Version: 0.1.0
-Authors@R: 
-    person("First", "Last", email = "name@example.com", role = c("aut", "cre"))
+Authors@R: c(
+    person(given = "Shalu", family = "Shalu", email = "a02470444@usu.edu", role = c("aut", "cre")),
+    person(given = "Amanda", family = "Wijesinghe", email = "amandagdtw@gmail.com", role = c("aut")),
+    person(given = "Akhila", family = "Akkala", email = "akhilaakkala2697@gmail.com", role = c("aut")),
+    person(given = "Omnia", family = "Dafalla", email = "omniadafalla07@gmail.com", role = c("aut"))
+    )
 Description: 
     The 'stocksr' package provides tools to load, process, and analyze S&P 500 
     stock price data specifically for the Energy and Healthcare sectors. 

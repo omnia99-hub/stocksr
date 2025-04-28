@@ -9,7 +9,8 @@
 #' @param sector_data A data frame containing the engineered features, including
 #'        `sector_index`, `returns`, lagged features, and technical indicators.
 #'        The data must have a `Date` column and a `sector_index` column as the
-#'        target.
+#'        target
+#' @param ... arguments to be passed to methods, such as `ntree` number of trees
 #' @param sector_name A character string giving the name of the sector, used in
 #'        print outputs and plot title.
 #'
@@ -37,7 +38,7 @@
 #' result <- build_random_forest_model(df_tech, "Energy")
 #' result$rmse
 #' head(result$feature_importance)
-build_random_forest_model <- function(sector_data, sector_name) {
+build_random_forest_model <- function(sector_data, sector_name, ...) {
   cat("\n--- Building Random Forest model for", sector_name, "sector ---\n")
 
   # Prepare data
@@ -58,9 +59,8 @@ build_random_forest_model <- function(sector_data, sector_name) {
   rf_model <- randomForest(
     x = x_train,
     y = y_train,
-    ntree = 500,
-    mtry = floor(sqrt(ncol(x_train))),
-    importance = TRUE # This is crucial for importance calculation
+    importance = TRUE, # This is crucial for importance calculation
+    ...
   )
 
   # Predictions

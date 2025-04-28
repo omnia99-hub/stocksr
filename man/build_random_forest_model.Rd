@@ -4,16 +4,18 @@
 \alias{build_random_forest_model}
 \title{Build Random Forest Model for Sector Index}
 \usage{
-build_random_forest_model(sector_data, sector_name)
+build_random_forest_model(sector_data, sector_name, ...)
 }
 \arguments{
 \item{sector_data}{A data frame containing the engineered features, including
 `sector_index`, `returns`, lagged features, and technical indicators.
 The data must have a `Date` column and a `sector_index` column as the
-target.}
+target}
 
 \item{sector_name}{A character string giving the name of the sector, used in
 print outputs and plot title.}
+
+\item{...}{arguments to be passed to methods, such as `ntree` number of trees}
 }
 \value{
 A named list containing:

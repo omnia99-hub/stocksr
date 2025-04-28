@@ -40,13 +40,23 @@ Forests - Compare model performance across different market sectors
 
 ## Installation
 
-You can install the development version of stocksr from
-[GitHub](https://github.com/) with:
+You can install the development version of **stocksr** as follows:
 
 ``` r
-# install.packages("pak")
-pak::pak("omnia99-hub/stocksr")
+# install.package("omnia99-hub/stocksr")
+devtools::install_github("omnia99-hub/stocksr")
 ```
+
+To get started on using this repository, you can also type the following
+into your favorite git command line tool:
+
+``` r
+# git clone git@github.com/omnia99-hub/stocksr.git
+```
+
+The previous command will install the package onto your computer. All
+necessary raw data is already included within the package and can be
+accessed directly without additional downloads.
 
 ## Example
 
@@ -180,13 +190,13 @@ head(features_energy)
 # Step 4: Train the random forest model
 
 ``` r
-results_healtcare <- build_random_forest_model(features_healthcare, sector_name = "Healthcare")
+results_healtcare <- build_random_forest_model(features_healthcare, sector_name = "Healthcare", ntree =1000)
 #> 
 #> --- Building Random Forest model for Healthcare sector ---
 #> Model performance:
-#> RMSE: 0.8883 
-#> MAE: 0.4969 
-#> R<U+00B2>: 0.9993
+#> RMSE: 0.8497 
+#> MAE: 0.4578 
+#> R<U+00B2>: 0.9994
 results_healtcare$prediction_plot
 ```
 
@@ -200,13 +210,13 @@ results_healtcare$importance_plot
 
 ``` r
 
-results_energy <- build_random_forest_model(features_energy, sector_name = "Energy")
+results_energy <- build_random_forest_model(features_energy, sector_name = "Energy", ntree =1000)
 #> 
 #> --- Building Random Forest model for Energy sector ---
 #> Model performance:
-#> RMSE: 0.805 
-#> MAE: 0.5125 
-#> R<U+00B2>: 0.9967
+#> RMSE: 0.7325 
+#> MAE: 0.4334 
+#> R<U+00B2>: 0.9973
 results_energy$prediction_plot
 ```
 
@@ -223,40 +233,40 @@ Step 5: Train the LSTM model
 lstm_results_healthcare <- build_lstm_model(health_care, sector_name = "Healthcare")
 #> 
 #> --- Building LSTM model for Healthcare sector ---
-#> Epoch 1/30, Train Loss: 0.1986, Val Loss: 0.8675
-#> Epoch 2/30, Train Loss: 0.0205, Val Loss: 0.3333
-#> Epoch 3/30, Train Loss: 0.0131, Val Loss: 0.1971
-#> Epoch 4/30, Train Loss: 0.0091, Val Loss: 0.1567
-#> Epoch 5/30, Train Loss: 0.0090, Val Loss: 0.1265
-#> Epoch 6/30, Train Loss: 0.0084, Val Loss: 0.1109
-#> Epoch 7/30, Train Loss: 0.0083, Val Loss: 0.0926
-#> Epoch 8/30, Train Loss: 0.0081, Val Loss: 0.0931
-#> Epoch 9/30, Train Loss: 0.0080, Val Loss: 0.0905
-#> Epoch 10/30, Train Loss: 0.0078, Val Loss: 0.0800
-#> Epoch 11/30, Train Loss: 0.0072, Val Loss: 0.0807
-#> Epoch 12/30, Train Loss: 0.0071, Val Loss: 0.0789
-#> Epoch 13/30, Train Loss: 0.0077, Val Loss: 0.0735
-#> Epoch 14/30, Train Loss: 0.0071, Val Loss: 0.0728
-#> Epoch 15/30, Train Loss: 0.0069, Val Loss: 0.0798
-#> Epoch 16/30, Train Loss: 0.0073, Val Loss: 0.0627
-#> Epoch 17/30, Train Loss: 0.0069, Val Loss: 0.0680
-#> Epoch 18/30, Train Loss: 0.0074, Val Loss: 0.0804
-#> Epoch 19/30, Train Loss: 0.0070, Val Loss: 0.0543
-#> Epoch 20/30, Train Loss: 0.0063, Val Loss: 0.0606
-#> Epoch 21/30, Train Loss: 0.0065, Val Loss: 0.0607
-#> Epoch 22/30, Train Loss: 0.0068, Val Loss: 0.0576
-#> Epoch 23/30, Train Loss: 0.0062, Val Loss: 0.0521
-#> Epoch 24/30, Train Loss: 0.0067, Val Loss: 0.0651
-#> Epoch 25/30, Train Loss: 0.0064, Val Loss: 0.0545
-#> Epoch 26/30, Train Loss: 0.0062, Val Loss: 0.0426
-#> Epoch 27/30, Train Loss: 0.0060, Val Loss: 0.0416
-#> Epoch 28/30, Train Loss: 0.0061, Val Loss: 0.0404
-#> Epoch 29/30, Train Loss: 0.0066, Val Loss: 0.0584
-#> Epoch 30/30, Train Loss: 0.0060, Val Loss: 0.0420
+#> Epoch 1/30, Train Loss: 0.2130, Val Loss: 0.8859
+#> Epoch 2/30, Train Loss: 0.0204, Val Loss: 0.3415
+#> Epoch 3/30, Train Loss: 0.0126, Val Loss: 0.2259
+#> Epoch 4/30, Train Loss: 0.0097, Val Loss: 0.1524
+#> Epoch 5/30, Train Loss: 0.0087, Val Loss: 0.1292
+#> Epoch 6/30, Train Loss: 0.0085, Val Loss: 0.1148
+#> Epoch 7/30, Train Loss: 0.0082, Val Loss: 0.0973
+#> Epoch 8/30, Train Loss: 0.0083, Val Loss: 0.0837
+#> Epoch 9/30, Train Loss: 0.0079, Val Loss: 0.0807
+#> Epoch 10/30, Train Loss: 0.0074, Val Loss: 0.0872
+#> Epoch 11/30, Train Loss: 0.0074, Val Loss: 0.0844
+#> Epoch 12/30, Train Loss: 0.0071, Val Loss: 0.0695
+#> Epoch 13/30, Train Loss: 0.0076, Val Loss: 0.0766
+#> Epoch 14/30, Train Loss: 0.0076, Val Loss: 0.0595
+#> Epoch 15/30, Train Loss: 0.0071, Val Loss: 0.0706
+#> Epoch 16/30, Train Loss: 0.0075, Val Loss: 0.0787
+#> Epoch 17/30, Train Loss: 0.0068, Val Loss: 0.0725
+#> Epoch 18/30, Train Loss: 0.0071, Val Loss: 0.0667
+#> Epoch 19/30, Train Loss: 0.0067, Val Loss: 0.0582
+#> Epoch 20/30, Train Loss: 0.0063, Val Loss: 0.0673
+#> Epoch 21/30, Train Loss: 0.0068, Val Loss: 0.0663
+#> Epoch 22/30, Train Loss: 0.0070, Val Loss: 0.0583
+#> Epoch 23/30, Train Loss: 0.0063, Val Loss: 0.0477
+#> Epoch 24/30, Train Loss: 0.0066, Val Loss: 0.0562
+#> Epoch 25/30, Train Loss: 0.0061, Val Loss: 0.0562
+#> Epoch 26/30, Train Loss: 0.0060, Val Loss: 0.0491
+#> Epoch 27/30, Train Loss: 0.0061, Val Loss: 0.0427
+#> Epoch 28/30, Train Loss: 0.0062, Val Loss: 0.0477
+#> Epoch 29/30, Train Loss: 0.0062, Val Loss: 0.0320
+#> Epoch 30/30, Train Loss: 0.0070, Val Loss: 0.0335
 #> Model performance:
-#> RMSE: 7.0716 
-#> MAE: 5.1665 
-#> R^2: 0.6053
+#> RMSE: 6.3166 
+#> MAE: 4.5576 
+#> R^2: 0.6851
 lstm_results_healthcare$prediction_plot
 ```
 
@@ -266,25 +276,30 @@ lstm_results_healthcare$prediction_plot
 lstm_results_energy <- build_lstm_model(energy, sector_name = "Energy")
 #> 
 #> --- Building LSTM model for Energy sector ---
-#> Epoch 1/30, Train Loss: 0.2680, Val Loss: 0.4747
-#> Epoch 2/30, Train Loss: 0.0283, Val Loss: 0.2330
-#> Epoch 3/30, Train Loss: 0.0173, Val Loss: 0.1826
-#> Epoch 4/30, Train Loss: 0.0141, Val Loss: 0.1669
-#> Epoch 5/30, Train Loss: 0.0138, Val Loss: 0.1631
-#> Epoch 6/30, Train Loss: 0.0138, Val Loss: 0.1608
-#> Epoch 7/30, Train Loss: 0.0138, Val Loss: 0.1499
-#> Epoch 8/30, Train Loss: 0.0137, Val Loss: 0.1308
-#> Epoch 9/30, Train Loss: 0.0127, Val Loss: 0.0998
-#> Epoch 10/30, Train Loss: 0.0122, Val Loss: 0.1272
-#> Epoch 11/30, Train Loss: 0.0120, Val Loss: 0.1306
-#> Epoch 12/30, Train Loss: 0.0120, Val Loss: 0.1151
-#> Epoch 13/30, Train Loss: 0.0116, Val Loss: 0.1187
-#> Epoch 14/30, Train Loss: 0.0119, Val Loss: 0.1257
-#> Early stopping at epoch 14
+#> Epoch 1/30, Train Loss: 0.2712, Val Loss: 0.5030
+#> Epoch 2/30, Train Loss: 0.0267, Val Loss: 0.2352
+#> Epoch 3/30, Train Loss: 0.0156, Val Loss: 0.1789
+#> Epoch 4/30, Train Loss: 0.0148, Val Loss: 0.1707
+#> Epoch 5/30, Train Loss: 0.0139, Val Loss: 0.1475
+#> Epoch 6/30, Train Loss: 0.0135, Val Loss: 0.1659
+#> Epoch 7/30, Train Loss: 0.0139, Val Loss: 0.1684
+#> Epoch 8/30, Train Loss: 0.0138, Val Loss: 0.1393
+#> Epoch 9/30, Train Loss: 0.0123, Val Loss: 0.1339
+#> Epoch 10/30, Train Loss: 0.0135, Val Loss: 0.1321
+#> Epoch 11/30, Train Loss: 0.0120, Val Loss: 0.1178
+#> Epoch 12/30, Train Loss: 0.0132, Val Loss: 0.0969
+#> Epoch 13/30, Train Loss: 0.0124, Val Loss: 0.1098
+#> Epoch 14/30, Train Loss: 0.0124, Val Loss: 0.0922
+#> Epoch 15/30, Train Loss: 0.0120, Val Loss: 0.1004
+#> Epoch 16/30, Train Loss: 0.0121, Val Loss: 0.1155
+#> Epoch 17/30, Train Loss: 0.0122, Val Loss: 0.0993
+#> Epoch 18/30, Train Loss: 0.0119, Val Loss: 0.1071
+#> Epoch 19/30, Train Loss: 0.0116, Val Loss: 0.1065
+#> Early stopping at epoch 19
 #> Model performance:
-#> RMSE: 4.9653 
-#> MAE: 3.1787 
-#> R^2: 0.9007
+#> RMSE: 4.57 
+#> MAE: 2.9097 
+#> R^2: 0.9159
 lstm_results_energy$prediction_plot
 ```
 

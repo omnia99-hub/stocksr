@@ -10,7 +10,8 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  warning = FALSE
 )
 ```
 
@@ -277,7 +278,7 @@ The `build_random_forest_model()` function performs the following steps:
 
 ```{r build-rf-model, message = FALSE, warning = FALSE}
 # Train and evaluate the model
-rf_energy <- build_random_forest_model(tech_features, "Energy")
+rf_energy <- build_random_forest_model(tech_features, "Energy", ntree =1000)
 ```
 
 ### Output
@@ -356,7 +357,7 @@ The Random Forest model identified the most important features for predicting th
 memory**, and **momentum signals** to achieve high predictive performance.
 
 ```{r}
-rf_healthcare <- build_random_forest_model(tech_features, "Healthcare")
+rf_healthcare <- build_random_forest_model(tech_features, "Healthcare", ntree =1000)
 ```
 
 ```{r}
