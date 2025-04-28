@@ -53,10 +53,8 @@ pak::pak("omnia99-hub/stocksr")
 ``` r
 devtools::load_all(".")
 #> ℹ Loading stocksr
-#> Warning: package 'testthat' was built under R version 4.4.2
 #> Warning: package 'caret' was built under R version 4.4.3
 #> Loading required package: ggplot2
-#> Warning: package 'ggplot2' was built under R version 4.4.3
 #> Loading required package: lattice
 #> Warning: package 'randomForest' was built under R version 4.4.3
 #> randomForest 4.7-1.2
@@ -68,14 +66,12 @@ devtools::load_all(".")
 #> 
 #>     margin
 #> Warning: package 'torch' was built under R version 4.4.3
-#> Warning: package 'zoo' was built under R version 4.4.3
 #> 
 #> Attaching package: 'zoo'
 #> 
 #> The following objects are masked from 'package:base':
 #> 
 #>     as.Date, as.Date.numeric
-#> Warning: package 'TTR' was built under R version 4.4.3
 #> Warning: package 'ranger' was built under R version 4.4.3
 #> 
 #> Attaching package: 'ranger'
@@ -308,7 +304,8 @@ lstm_results_healthcare <- build_lstm_model(health_care, sector_name = "Healthca
 #> Model performance:
 #> RMSE: 7.0716 
 #> MAE: 5.1665 
-#> R²: 0.6053
+#> R^2: 0.6053
+lstm_results_healthcare$prediction_plot
 ```
 
 <img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
@@ -335,7 +332,8 @@ lstm_results_energy <- build_lstm_model(energy, sector_name = "Energy")
 #> Model performance:
 #> RMSE: 4.9653 
 #> MAE: 3.1787 
-#> R²: 0.9007
+#> R^2: 0.9007
+lstm_results_energy$prediction_plot
 ```
 
 <img src="man/figures/README-unnamed-chunk-8-2.png" width="100%" />

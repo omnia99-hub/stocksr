@@ -202,18 +202,18 @@ build_lstm_model <- function(sector_data, sector_name, time_steps = 10) {
     rmse <- sqrt(mse)
     mae <- mean(abs(y_actual - y_pred))
 
-    # R² calculation
+    # R^2 calculation
     ss_total <- sum((y_actual - mean(y_actual))^2)
     ss_residual <- sum((y_actual - y_pred)^2)
     r2 <- 1 - (ss_residual / ss_total)
 
-    # Ensure R² is between 0 and 1
+    # Ensure R^2 is between 0 and 1
     r2 <- max(0, min(1, r2))
 
     cat("Model performance:\n")
     cat("RMSE:", round(rmse, 4), "\n")
     cat("MAE:", round(mae, 4), "\n")
-    cat("R²:", round(r2, 4), "\n")
+    cat("R^2:", round(r2, 4), "\n")
 
     # Get test dates for plotting
     test_dates <- prepared_data$dates[(train_size
@@ -241,23 +241,20 @@ build_lstm_model <- function(sector_data, sector_name, time_steps = 10) {
                 alpha = 0.7) +
       labs(
         title = paste(sector_name, "Sector - LSTM Predictions"),
-        subtitle = paste("R² =", round(r2, 3)),
+        subtitle = paste("R^2 =", round(r2, 3)),
         x = "Date",
         y = "Sector Index"
       ) +
       scale_color_manual(values = c("Actual" = "blue", "Predicted" = "red")) +
       theme_minimal()
 
-    print(p)
-
-
-
     list(
       model = model,
       rmse = rmse,
       mae = mae,
       r2 = r2,
-      feature_names = prepared_data$feature_names
+      feature_names = prepared_data$feature_names,
+      prediction_plot = p
 
     )
 
@@ -270,8 +267,8 @@ build_lstm_model <- function(sector_data, sector_name, time_steps = 10) {
       rmse = NA,
       mae = NA,
       r2 = NA,
-      feature_names = "error"
-
+      feature_names = "error",
+      prediction_plot = NA
     )
   })
 }

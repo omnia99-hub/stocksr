@@ -108,7 +108,9 @@ results_energy$importance_plot
 # Step 5: Train the LSTM model
 ```{r}
 lstm_results_healthcare <- build_lstm_model(health_care, sector_name = "Healthcare")
+lstm_results_healthcare$prediction_plot
 lstm_results_energy <- build_lstm_model(energy, sector_name = "Energy")
+lstm_results_energy$prediction_plot
 ```
 
 ## Notes
