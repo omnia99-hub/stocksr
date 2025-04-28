@@ -33,6 +33,7 @@
 #' tensor of shape `(batch_size, output_dim)`.
 #'
 #' @examples
+#' \dontrun{
 #' library(torch)
 #'
 #' model <- lstm_model(input_dim = 10, hidden_dim = 32, output_dim = 1,
@@ -44,7 +45,7 @@
 #' # Get model output
 #' y_pred <- model(x)
 #' print(y_pred$shape)  # Should be (5, 1)
-#'
+#' }
 #' @export
 
 

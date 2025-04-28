@@ -46,6 +46,7 @@ using `torch` for time series or sequential data prediction.
 }
 
 \examples{
+\dontrun{
 library(torch)
 
 model <- lstm_model(input_dim = 10, hidden_dim = 32, output_dim = 1,
@@ -57,5 +58,5 @@ x <- torch_randn(5, 7, 10)
 # Get model output
 y_pred <- model(x)
 print(y_pred$shape)  # Should be (5, 1)
-
+}
 }
